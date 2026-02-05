@@ -146,8 +146,6 @@ Processing:
 - scripts/sentiment-model.py: Advanced sentiment analysis
 ```
 
----
-
 ## 架构设计
 
 ### 系统架构图
@@ -198,7 +196,8 @@ flowchart TB
     style LLM fill:#f8d7da
 ```
 
-\* If relevant skills detected  \*\* If skill execution confirmed
+\* If relevant skills detected  
+\*\* If skill execution confirmed
 
 ### 数据流详解
 
