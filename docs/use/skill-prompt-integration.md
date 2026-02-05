@@ -44,12 +44,12 @@
 
 ### Tier 1: Discovery（发现层）
 
-**加载时机**：每次对话开始时
-**内容量级**：轻量级（~100-200 tokens）
-**包含信息**：
-- 技能名称
-- 一句话描述
-- 适用场景关键词
+- **加载时机**：每次对话开始时
+- **内容量级**：轻量级（~100-200 tokens）
+- **包含信息**：
+  - 技能名称
+  - 一句话描述
+  - 适用场景关键词
 
 ```markdown
 You have access to these skills:
@@ -61,13 +61,13 @@ You have access to these skills:
 
 ### Tier 2: Activation（激活层）
 
-**加载时机**：LLM 识别到需要使用某个 skill
-**内容量级**：中等（~500-2000 tokens）
-**包含信息**：
-- 完整描述
-- 何时使用此 skill
-- 输入/输出格式
-- 执行步骤概述
+- **加载时机**：LLM 识别到需要使用某个 skill
+- **内容量级**：中等（~500-2000 tokens）
+- **包含信息**：
+  - 完整描述
+  - 何时使用此 skill
+  - 输入/输出格式
+  - 执行步骤概述
 
 ```markdown
 ## Skill: text-analysis
@@ -96,14 +96,14 @@ The skill returns a JSON object with:
 
 ### Tier 3: Execution（执行层）
 
-**加载时机**：实际执行 skill 时
-**内容量级**：完整（可能 2000+ tokens）
-**包含信息**：
-- 完整的 SKILL.md 内容
-- 详细执行步骤
-- 示例和边界情况
-- 错误处理指南
-- 相关脚本和工具
+- **加载时机**：实际执行 skill 时
+- **内容量级**：完整（可能 2000+ tokens）
+- **包含信息**：
+  - 完整的 SKILL.md 内容
+  - 详细执行步骤
+  - 示例和边界情况
+  - 错误处理指南
+  - 相关脚本和工具
 
 ```markdown
 # Text Analysis Skill - Complete Guide
