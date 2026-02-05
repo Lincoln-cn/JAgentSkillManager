@@ -4,6 +4,8 @@
 
 ## 📚 文档导航
 
+**Languages**: [中文](README.md) | [English](README_EN.md)
+
 - **[Tools 集成指南](docs/use/tool-integration.md)** - 通过 Function Calling 集成技能
 - **[Skill Prompt 集成指南](docs/use/skill-prompt-integration.md)** - 通过渐进式披露植入提示词
 
