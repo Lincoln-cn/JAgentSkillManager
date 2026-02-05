@@ -152,95 +152,102 @@ Processing:
 
 ### 系统架构图
 
+```mermaid
+flowchart TB
+    User[User Request] --> PBS[Prompt Builder Service]
+    
+    subgraph PBS[Prompt Builder Service]
+        direction TB
+        T1[Tier 1: Discovery Layer<br/>Always Loaded]
+        T1 --> ID[Intent Detection<br/>LLM or Rule-based analysis]
+        ID --> T2[Tier 2: Activation Layer<br/>If skills detected]
+        T2 --> T3[Tier 3: Execution Layer<br/>If confirmed to use]
+    end
+    
+    subgraph T1Details[Tier 1 Details]
+        direction LR
+        T1_1[Load all skill names<br/>+ descriptions]
+        T1_2[Add to System Prompt]
+    end
+    
+    subgraph T2Details[Tier 2 Details]
+        direction LR
+        T2_1[Load skill descriptions]
+        T2_2[Add input/output schemas]
+        T2_3[Add usage guidelines]
+    end
+    
+    subgraph T3Details[Tier 3 Details]
+        direction LR
+        T3_1[Load full SKILL.md content]
+        T3_2[Load scripts/examples]
+        T3_3[Add execution guidelines]
+    end
+    
+    T1 --> T1Details
+    T2 --> T2Details
+    T3 --> T3Details
+    
+    T3 --> ESP[Enhanced System Prompt<br/>Base Role + Discovery + Activation* + Execution**]
+    ESP --> LLM[LLM Processing<br/>Understands available skills<br/>Knows how to use detected skills<br/>Can execute with detailed guidance]
+    LLM --> Response[Response / Execution]
+    
+    style User fill:#e1f5ff
+    style Response fill:#d4edda
+    style ESP fill:#fff3cd
+    style LLM fill:#f8d7da
 ```
-┌──────────────────────────────────────────────────────────────────────┐
-│                     User Request                                      │
-└───────────────────────┬──────────────────────────────────────────────┘
-                        │
-                        ▼
-┌──────────────────────────────────────────────────────────────────────┐
-│              Prompt Builder Service                                   │
-│  ┌─────────────────────────────────────────────────────────────────┐ │
-│  │  Tier 1: Discovery Layer (Always Loaded)                        │ │
-│  │  ├── Load all skill names + descriptions                        │ │
-│  │  └── Add to System Prompt                                       │ │
-│  └─────────────────────────────────────────────────────────────────┘ │
-│                              │                                       │
-│                              ▼                                       │
-│  ┌─────────────────────────────────────────────────────────────────┐ │
-│  │  Intent Detection                                               │ │
-│  │  ├── LLM or Rule-based analysis                                 │ │
-│  │  └── Identify relevant skills                                   │ │
-│  └─────────────────────────────────────────────────────────────────┘ │
-│                              │                                       │
-│                              ▼                                       │
-│  ┌─────────────────────────────────────────────────────────────────┐ │
-│  │  Tier 2: Activation Layer (If skills detected)                  │ │
-│  │  ├── Load skill descriptions                                    │ │
-│  │  ├── Add input/output schemas                                   │ │
-│  │  └── Add usage guidelines                                       │ │
-│  └─────────────────────────────────────────────────────────────────┘ │
-│                              │                                       │
-│                              ▼                                       │
-│  ┌─────────────────────────────────────────────────────────────────┐ │
-│  │  Tier 3: Execution Layer (If confirmed to use)                  │ │
-│  │  ├── Load full SKILL.md content                                 │ │
-│  │  ├── Load scripts/examples                                      │ │
-│  │  └── Add execution guidelines                                   │ │
-│  └─────────────────────────────────────────────────────────────────┘ │
-└───────────────────────┬──────────────────────────────────────────────┘
-                        │
-                        ▼
-┌──────────────────────────────────────────────────────────────────────┐
-│              Enhanced System Prompt                                   │
-│  [Base Role] + [Discovery] + [Activation*] + [Execution**]           │
-└───────────────────────┬──────────────────────────────────────────────┘
-                        │
-                        ▼
-┌──────────────────────────────────────────────────────────────────────┐
-│                    LLM Processing                                     │
-│  - Understands available skills                                       │
-│  - Knows how to use detected skills                                   │
-│  - Can execute with detailed guidance                                 │
-└───────────────────────┬──────────────────────────────────────────────┘
-                        │
-                        ▼
-┌──────────────────────────────────────────────────────────────────────┐
-│                 Response / Execution                                  │
-└──────────────────────────────────────────────────────────────────────┘
 
-* If relevant skills detected
-** If skill execution confirmed
-```
+\* If relevant skills detected  \*\* If skill execution confirmed
 
 ### 数据流详解
 
-```
-1. 初始化
-   └── 加载所有 Skills → 构建 Discovery Cache → 存储 Metadata
-
-2. Discovery 阶段（每次请求）
-   └── 构建基础 System Prompt
-       └── 角色定义
-       └── Discovery Layer（所有 skills 的名称+描述）
-       └── 使用说明
-
-3. Activation 阶段（检测到相关 skill）
-   └── 意图识别 → 匹配相关 skills
-   └── 加载 Tier 2 信息：
-       └── 何时使用
-       └── 输入/输出格式
-       └── 基本执行步骤
-
-4. Execution 阶段（确认执行）
-   └── 加载完整 SKILL.md
-   └── 加载相关脚本/示例
-   └── 构建执行上下文
-
-5. 执行与响应
-   └── LLM 按照详细指导生成执行计划
-   └── 可选：调用 tools 执行
-   └── 生成最终回复
+```mermaid
+flowchart LR
+    subgraph Init[1. 初始化]
+        direction TB
+        LoadSkills[加载所有 Skills] --> BuildCache[构建 Discovery Cache]
+        BuildCache --> StoreMeta[存储 Metadata]
+    end
+    
+    subgraph Discovery[2. Discovery 阶段<br/>每次请求]
+        direction TB
+        BuildPrompt[构建基础 System Prompt] --> RoleDef[角色定义]
+        RoleDef --> DiscoveryLayer[Discovery Layer<br/>所有 skills 的名称+描述]
+        DiscoveryLayer --> UsageGuide[使用说明]
+    end
+    
+    subgraph Activation[3. Activation 阶段<br/>检测到相关 skill]
+        direction TB
+        IntentDetect[意图识别] --> MatchSkills[匹配相关 skills]
+        MatchSkills --> LoadTier2[加载 Tier 2 信息]
+        LoadTier2 --> WhenToUse[何时使用]
+        WhenToUse --> IOFormat[输入/输出格式]
+        IOFormat --> BasicSteps[基本执行步骤]
+    end
+    
+    subgraph Execution[4. Execution 阶段<br/>确认执行]
+        direction TB
+        LoadSkillMd[加载完整 SKILL.md] --> LoadScripts[加载相关脚本/示例]
+        LoadScripts --> BuildContext[构建执行上下文]
+    end
+    
+    subgraph Response[5. 执行与响应]
+        direction TB
+        GenPlan[LLM 按照详细指导<br/>生成执行计划] --> CallTools[可选：调用 tools 执行]
+        CallTools --> GenResponse[生成最终回复]
+    end
+    
+    Init --> Discovery
+    Discovery --> Activation
+    Activation --> Execution
+    Execution --> Response
+    
+    style Init fill:#e3f2fd
+    style Discovery fill:#e8f5e9
+    style Activation fill:#fff3e0
+    style Execution fill:#fce4ec
+    style Response fill:#d4edda
 ```
 
 ---
