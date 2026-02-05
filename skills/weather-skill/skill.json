@@ -1,0 +1,46 @@
+{
+  "name": "weather-skill",
+  "version": "1.0.0",
+  "description": "Provides weather information for any location worldwide",
+  "author": "Agent Skill Team",
+  "tags": ["weather", "forecast", "location"],
+  "category": "utility",
+  "keywords": ["weather", "temperature", "forecast", "rain", "sunny", "climate"],
+  "main": "org.unreal.agent.skill.example.WeatherSkill",
+  "enabled": true,
+  "dependencies": {
+    "weather-api": "1.0.0"
+  },
+  "parameters": {
+    "required": {
+      "location": "The location to get weather for (city name or coordinates)"
+    },
+    "optional": {
+      "units": "Temperature units: celsius, fahrenheit, or kelvin",
+      "days": "Number of days for forecast (1-7)",
+      "includeHourly": "Whether to include hourly forecast (true/false)"
+    }
+  },
+  "entryPoints": [
+    {
+      "name": "current-weather",
+      "description": "Get current weather conditions",
+      "path": "WeatherSkill.java",
+      "method": "getCurrentWeather",
+      "keywords": ["current weather", "weather now", "temperature"]
+    },
+    {
+      "name": "forecast",
+      "description": "Get weather forecast for multiple days",
+      "path": "WeatherSkill.java",
+      "method": "getForecast",
+      "keywords": ["forecast", "weather tomorrow", "weather week"]
+    }
+  ],
+  "resources": {
+    "scripts": ["weather-api-client.js"],
+    "templates": ["weather-response.json"],
+    "configs": ["api-keys.properties"],
+    "assets": ["weather-icons/"]
+  }
+}

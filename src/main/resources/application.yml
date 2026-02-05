@@ -1,0 +1,33 @@
+# Application configuration file
+server:
+  port: 8080
+
+spring:
+  application:
+    name: agent-skill-manager
+  profiles:
+    active: dev
+
+# Agent Skill configuration
+agent:
+  skill:
+    enabled: true
+    auto-register: true
+    spring-ai-integration: true
+    folder-based-skills: true
+    agentskills-enabled: true
+    progressive-disclosure: true
+    enable-metadata-cache: true
+    skills-directory: "skills"
+    hot-reload-enabled: true
+    auto-load-skills: true
+    strict-validation: false
+    max-skill-md-size-kb: 20
+
+# Logging configuration
+logging:
+  level:
+    org.unreal: DEBUG
+    org.springframework: INFO
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"

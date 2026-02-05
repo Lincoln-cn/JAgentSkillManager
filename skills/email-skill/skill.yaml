@@ -1,0 +1,38 @@
+name: email-skill
+version: "1.0.0"
+description: "Sends emails and manages email operations"
+author: "Agent Skill Team"
+tags: ["email", "communication", "notification"]
+category: "communication"
+keywords: ["email", "send", "message", "notification"]
+main: "org.unreal.agent.skill.example.EmailSkill"
+enabled: true
+dependencies:
+  smtp-client: "1.0.0"
+parameters:
+  required:
+    to: "Recipient email address"
+    subject: "Email subject line"
+  optional:
+    cc: "Carbon copy recipients (comma-separated)"
+    bcc: "Blind carbon copy recipients (comma-separated)"
+    body: "Email body content (HTML or plain text)"
+    attachments: "List of file paths to attach"
+    priority: "Email priority: high, normal, or low"
+    format: "Email format: html or text"
+entryPoints:
+  - name: "send-email"
+    description: "Send an email to specified recipients"
+    path: "EmailSkill.java"
+    method: "sendEmail"
+    keywords: ["send email", "email notification", "mail message"]
+  - name: "validate-email"
+    description: "Validate email address format"
+    path: "EmailSkill.java"
+    method: "validateEmail"
+    keywords: ["validate email", "email format", "check email"]
+resources:
+  scripts: ["email-templates.js", "smtp-config.js"]
+  templates: ["welcome-email.html", "notification-email.html"]
+  configs: ["email.properties", "smtp.properties"]
+  assets: ["email-logos/", "signatures/"]
