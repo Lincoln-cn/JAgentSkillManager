@@ -154,9 +154,9 @@ Processing:
 
 ```mermaid
 flowchart TB
-    User[User Request] --> PBS[Prompt Builder Service]
+    User[User Request] --> PBS
     
-    subgraph PBS[Prompt Builder Service]
+    subgraph PromptBuilderService[Prompt Builder Service]
         direction TB
         T1[Tier 1: Discovery Layer<br/>Always Loaded]
         T1 --> ID[Intent Detection<br/>LLM or Rule-based analysis]
