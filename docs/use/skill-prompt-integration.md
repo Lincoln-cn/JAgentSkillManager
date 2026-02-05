@@ -87,9 +87,8 @@ Use this skill when the user needs to:
 ```
 
 ### Output Format
-
 The skill returns a JSON object with:
-
+```
 - word_count: number
 - character_count: number
 - sentiment: 'positive' | 'negative' | 'neutral'
@@ -107,7 +106,6 @@ The skill returns a JSON object with:
   - 错误处理指南
   - 相关脚本和工具
 
-```markdown
 # Text Analysis Skill - Complete Guide
 
 ## Overview
