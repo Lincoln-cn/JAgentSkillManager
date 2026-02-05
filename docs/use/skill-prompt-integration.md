@@ -141,11 +141,6 @@ Processing:
 - Non-string input: Attempt to convert to string
 - Very long text (>10000 chars): Process in chunks
 
-## Scripts Available
-- scripts/text-processor.py: Main processing script
-- scripts/sentiment-model.py: Advanced sentiment analysis
-```
-
 ## 架构设计
 
 ### 系统架构图
@@ -195,9 +190,6 @@ flowchart TB
     style ESP fill:#fff3cd
     style LLM fill:#f8d7da
 ```
-
-\* If relevant skills detected  
-\*\* If skill execution confirmed
 
 ### 数据流详解
 
