@@ -81,6 +81,10 @@ docs/
 - **[API Documentation](api/API_DOCUMENTATION.md)** - RESTful API full reference (English & Chinese)
 - **[Code Structure Guide](code-structure.md)** - Project structure and coding standards
 
+---
+
+更多文档请见： [docs/index.md](index.md)
+
 ## 📝 贡献文档
 
 如果你想改进文档：

@@ -12,6 +12,7 @@ A comprehensive framework for managing and integrating agent skills into Spring 
 - **[Skill Prompt Integration Guide](docs/guides/use/skill-prompt-integration_EN.md)** - Progressive disclosure of skill instructions
 - **[API Documentation](docs/api/API_DOCUMENTATION.md)** - Complete RESTful API documentation
 - **[Code Structure Guide](docs/code-structure.md)** - Project structure and coding standards
+- **[Documentation Index](docs/README.md)** - Documentation overview and index (Chinese & English)
 
 ## 🌟 Features
 
