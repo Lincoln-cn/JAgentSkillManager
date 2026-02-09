@@ -457,4 +457,24 @@ Map<String, Object> allSkills = adapter.getAllSkillsForAgentskillsIo();
 - `[FolderBasedSkillLoader](src/main/java/org/unreal/agent/skill/folder/FolderBasedSkillLoader.java)` - 文件夹技能加载器
 - `[SkillLifecycleManager](src/main/java/org/unreal/agent/skill/folder/SkillLifecycleManager.java)` - 生命周期管理
 
+## 配置、日志与多环境说明
+
+本仓库已提供完整的日志配置与多环境（dev / prod）支持。文档集中放在 `docs/` 目录下：
+
+- `docs/dependencies.md` - 项目主要依赖与版本说明
+- `docs/logging.md` - Logback 完整配置与使用说明（包含滚动、异步写入、环境差异）
+- `docs/environments.md` - dev / prod 环境切换、差异及启动命令
+- `docs/skills-disclosure.md` - 脚本类技能的渐进式披露说明（不在运行时执行，而是把脚本内容披露给调用方）
+
+快速示例：
+
+- 启动开发环境（更详细控制台日志、热加载启用）：
+  - `mvn spring-boot:run -Dspring-boot.run.profiles=dev`
+- 启动生产环境（更低日志噪音、禁用热加载）：
+  - `mvn spring-boot:run -Dspring-boot.run.profiles=prod` 或 `-Dspring.profiles.active=prod`
+
+日志文件默认写入 `${LOG_HOME:-logs}/${spring.application.name}.log`，可通过设置环境变量 `LOG_HOME` 覆盖。
+
+更多细节请参见 `docs/` 下相关文档。
+
 这个框架为 Spring AI 应用提供了一个完整、生产就绪的技能管理解决方案，同时保持与 agentskills.io 标准的完全兼容性。
