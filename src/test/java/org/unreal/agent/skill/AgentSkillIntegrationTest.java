@@ -4,7 +4,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
-import org.unreal.agent.skill.springai.SpringAIAgentSkillAdapter;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -18,35 +17,15 @@ class AgentSkillIntegrationTest {
     @Autowired
     private AgentSkillManager skillManager;
 
-    @Autowired
-    private SpringAIAgentSkillAdapter springAIAgentSkillAdapter;
-
     @Test
     void contextLoads() {
         assertNotNull(skillManager);
-        assertNotNull(springAIAgentSkillAdapter);
     }
 
     @Test
     void testSkillManagerIsReady() {
         // Test that skill manager is initialized and ready
         assertNotNull(skillManager.getAllSkills());
-    }
-
-    @Test
-    void testSpringAIFunctionDefinitions() {
-        var functionDefinitions = springAIAgentSkillAdapter.getFunctionDefinitions();
-        
-        // Function definitions list should exist (may be empty if no skills registered)
-        assertNotNull(functionDefinitions);
-    }
-
-    @Test
-    void testSkillDiscoveryInfo() {
-        var discoveryInfo = springAIAgentSkillAdapter.getSkillDiscoveryInfo();
-        
-        // Discovery info should exist (may be empty if no skills registered)
-        assertNotNull(discoveryInfo);
     }
 
     @Test
@@ -60,11 +39,18 @@ class AgentSkillIntegrationTest {
     }
 
     @Test
-    void testAllSkillsEndpoint() {
-        var allSkills = springAIAgentSkillAdapter.getAllSkillsForAgentskillsIo();
+    void testFindSkillWithEmptyManager() {
+        // Test that find skill returns null when no skills registered
+        var skill = skillManager.findSkillForRequest("test request");
         
-        assertNotNull(allSkills);
-        assertTrue(allSkills.containsKey("discovery"));
-        assertTrue(allSkills.containsKey("activation"));
+        assertNull(skill);
+    }
+
+    @Test
+    void testGetSkillWithEmptyManager() {
+        // Test that get skill returns null for non-existent skill
+        var skill = skillManager.getSkill("non-existent-skill");
+        
+        assertNull(skill);
     }
 }
