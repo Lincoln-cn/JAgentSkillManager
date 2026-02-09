@@ -1,0 +1,37 @@
+{
+  "name": "demo-calculator-skill",
+  "version": "1.0.0",
+  "description": "A demo calculator skill that performs basic arithmetic operations",
+  "author": "Demo Developer",
+  "tags": ["calculator", "math", "demo"],
+  "enabled": true,
+  "parameters": {
+    "operation": {
+      "type": "string",
+      "description": "The arithmetic operation to perform",
+      "required": true,
+      "enum": ["add", "subtract", "multiply", "divide"]
+    },
+    "a": {
+      "type": "number",
+      "description": "First operand",
+      "required": true
+    },
+    "b": {
+      "type": "number",
+      "description": "Second operand",
+      "required": true
+    }
+  },
+  "entryPoints": [
+    {
+      "pattern": "calculate|compute|math",
+      "description": "Triggers calculator operations"
+    }
+  ],
+  "instructions": "You are a calculator assistant. When users ask for calculations, use the parameters to perform the operation.\n\nSupported operations:\n- add: Adds two numbers\n- subtract: Subtracts second number from first\n- multiply: Multiplies two numbers\n- divide: Divides first number by second\n\nExample usage:\nUser: \"Calculate 5 plus 3\"\nYou should extract: operation=add, a=5, b=3",
+  "resources": {
+    "documentation": "README.md",
+    "examples": "examples/"
+  }
+}
