@@ -6,6 +6,8 @@ import org.springframework.web.bind.annotation.*;
 import org.unreal.agent.skill.AgentSkill;
 import org.unreal.agent.skill.AgentSkillManager;
 import org.unreal.agent.skill.AgentSkillResult;
+import org.unreal.agent.skill.folder.DescriptorAgentSkill;
+import org.unreal.agent.skill.folder.SkillDescriptor;
 
 import java.util.*;
 
@@ -60,20 +62,30 @@ public class AgentSkillController {
      * @return Skill details
      */
     @GetMapping("/{skillName}")
-    public ResponseEntity<Map<String, Object>> getSkillDetails(@PathVariable String skillName) {
+    public ResponseEntity<Map<String, Object>> getSkillDetails(@PathVariable String skillName,
+                                                                @RequestParam(name = "revealScripts", defaultValue = "false") boolean revealScripts) {
         var skill = skillManager.getSkill(skillName);
         if (skill == null) {
             return ResponseEntity.notFound().build();
         }
 
-        Map<String, Object> skillDetails = Map.of(
-                "name", skill.getName(),
-                "description", skill.getDescription(),
-                "version", skill.getVersion(),
-                "requiredParameters", skill.getRequiredParameters(),
-                "optionalParameters", skill.getOptionalParameters(),
-                "instructions", skill.getInstructions()
-        );
+        Map<String, Object> skillDetails = new LinkedHashMap<>();
+        skillDetails.put("name", skill.getName());
+        skillDetails.put("description", skill.getDescription());
+        skillDetails.put("version", skill.getVersion());
+        skillDetails.put("requiredParameters", skill.getRequiredParameters());
+        skillDetails.put("optionalParameters", skill.getOptionalParameters());
+        skillDetails.put("instructions", skill.getInstructions());
+
+        // Optionally reveal disclosed script contents kept in descriptor.extraMetadata.disclosedScripts
+        if (revealScripts) {
+            if (skill instanceof DescriptorAgentSkill) {
+                SkillDescriptor desc = ((DescriptorAgentSkill) skill).getDescriptor();
+                if (desc != null && desc.getExtraMetadata() != null && desc.getExtraMetadata().containsKey("disclosedScripts")) {
+                    skillDetails.put("disclosedScripts", desc.getExtraMetadata().get("disclosedScripts"));
+                }
+            }
+        }
 
         return ResponseEntity.ok(skillDetails);
     }

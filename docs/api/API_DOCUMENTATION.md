@@ -307,6 +307,50 @@ GET /api/agent-skills/names
 GET /api/agent-skills/{skillName}
 ```
 
+可选查询参数：
+
+- `revealScripts` (boolean, 默认 `false`)：当设置为 `true` 时，接口会返回技能描述文件中由加载器披露的脚本内容（`disclosedScripts`）。默认不返回以保护敏感信息。
+
+示例（不披露脚本，默认）：
+
+```bash
+curl http://localhost:8080/api/agent-skills/my-new-skill
+```
+
+示例（披露脚本内容）：
+
+```bash
+curl "http://localhost:8080/api/agent-skills/my-new-skill?revealScripts=true"
+```
+
+成功响应（当 revealScripts=true 且存在 disclosedScripts）：
+
+```json
+{
+  "name": "my-new-skill",
+  "description": "My custom skill",
+  "version": "1.0.0",
+  "requiredParameters": {},
+  "optionalParameters": {},
+  "instructions": "You are a helpful assistant...",
+  "disclosedScripts": {
+    "scripts/hello.py": {
+      "content": "#!/usr/bin/python\nprint('hello')\n",
+      "truncated": false,
+      "size": 42
+    },
+    "install/setup.sh": {
+      "content": "#!/bin/sh\n# ... long script truncated ...",
+      "truncated": true,
+      "size": 12345
+    }
+  }
+}
+```
+
+说明：`disclosedScripts` 的值是一个以相对路径为键的对象，值为包含 `content`（文本或被截断的文本）、`truncated`（布尔）和 `size`（字节数）字段的对象。加载器会基于配置 `agent.skill.max-skill-md-size-kb` 对脚本内容进行截断，默认不会在 API 中返回这些内容，必须显式请求。
+
+
 ### 11. 获取所有技能信息
 
 ```http

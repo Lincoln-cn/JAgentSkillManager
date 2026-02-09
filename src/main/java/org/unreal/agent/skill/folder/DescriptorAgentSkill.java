@@ -18,6 +18,13 @@ public class DescriptorAgentSkill implements AgentSkill {
         this.descriptor = descriptor;
     }
 
+    /**
+     * Expose underlying descriptor for management/API usage (read-only).
+     */
+    public SkillDescriptor getDescriptor() {
+        return descriptor;
+    }
+
     @Override
     public String getName() {
         return descriptor.getName();
