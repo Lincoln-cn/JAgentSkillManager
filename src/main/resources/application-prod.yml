@@ -1,0 +1,13 @@
+spring:
+  profiles: prod
+
+logging:
+  level:
+    org.unreal: INFO
+    org.springframework: WARN
+
+# Production overrides: disable hot reload
+agent:
+  skill:
+    hot-reload-enabled: false
+    auto-load-skills: true

@@ -1,0 +1,13 @@
+spring:
+  profiles: dev
+
+logging:
+  level:
+    org.unreal: DEBUG
+    org.springframework: INFO
+
+# Development-friendly overrides
+agent:
+  skill:
+    hot-reload-enabled: true
+    auto-load-skills: true

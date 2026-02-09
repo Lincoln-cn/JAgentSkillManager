@@ -5,8 +5,7 @@ server:
 spring:
   application:
     name: agent-skill-manager
-  profiles:
-    active: dev
+  # Do not hardcode active profile here; choose via -Dspring.profiles.active=dev|prod
 
 # Agent Skill configuration
 agent:
@@ -23,6 +22,10 @@ agent:
     auto-load-skills: true
     strict-validation: false
     max-skill-md-size-kb: 20
+
+# Environment-specific overrides are provided via profile-specific files:
+# - application-dev.yml for development
+# - application-prod.yml for production
 
 # Logging configuration
 logging:

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="30 seconds">
+
+    <!-- Define properties for log directories and patterns -->
+    <property name="LOG_HOME" value="${LOG_HOME:-logs}" />
+    <property name="APP_NAME" value="${spring.application.name:-agent-skill-manager}" />
+
+    <!-- Console pattern -->
+    <property name="CONSOLE_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n" />
+
+    <!-- Rolling file appender (daily + size-based rollover) -->
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_HOME}/${APP_NAME}.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- daily rollover and keep 30 days -->
+            <fileNamePattern>${LOG_HOME}/${APP_NAME}-%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>100MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+            <maxHistory>30</maxHistory>
+            <totalSizeCap>2GB</totalSizeCap>
+        </rollingPolicy>
+
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level [%thread] %logger{36} - %msg%n</pattern>
+            <charset>utf-8</charset>
+        </encoder>
+    </appender>
+
+    <!-- Console appender -->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${CONSOLE_PATTERN}</pattern>
+            <charset>utf-8</charset>
+        </encoder>
+    </appender>
+
+    <!-- Asynchronous appender for FILE to avoid blocking -->
+    <appender name="ASYNC_FILE" class="ch.qos.logback.classic.AsyncAppender">
+        <appender-ref ref="FILE" />
+        <queueSize>5000</queueSize>
+        <discardingThreshold>0</discardingThreshold>
+    </appender>
+
+    <!-- Development profile: more verbose console output -->
+    <springProfile name="dev">
+        <logger name="org.unreal" level="DEBUG" />
+        <logger name="org.springframework" level="INFO" />
+
+        <root level="DEBUG">
+            <appender-ref ref="CONSOLE" />
+            <appender-ref ref="ASYNC_FILE" />
+        </root>
+    </springProfile>
+
+    <!-- Production profile: less verbose console, file focused -->
+    <springProfile name="prod">
+        <logger name="org.unreal" level="INFO" />
+        <logger name="org.springframework" level="WARN" />
+
+        <root level="INFO">
+            <appender-ref ref="ASYNC_FILE" />
+            <appender-ref ref="CONSOLE" />
+        </root>
+    </springProfile>
+
+    <!-- Default (if no profile set) -> dev-like behavior -->
+    <springProfile name="default">
+        <logger name="org.unreal" level="DEBUG" />
+        <logger name="org.springframework" level="INFO" />
+
+        <root level="DEBUG">
+            <appender-ref ref="CONSOLE" />
+            <appender-ref ref="ASYNC_FILE" />
+        </root>
+    </springProfile>
+
+</configuration>
