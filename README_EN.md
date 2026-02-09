@@ -8,8 +8,9 @@ A comprehensive framework for managing and integrating agent skills into Spring 
 
 ## 📚 Documentation
 
-- **[Tools Integration Guide](docs/use/tool-integration_EN.md)** - Integrate skills via Function Calling
-- **[Skill Prompt Integration Guide](docs/use/skill-prompt-integration_EN.md)** - Progressive disclosure of skill instructions
+- **[Tools Integration Guide](docs/guides/use/tool-integration_EN.md)** - Integrate skills via Function Calling
+- **[Skill Prompt Integration Guide](docs/guides/use/skill-prompt-integration_EN.md)** - Progressive disclosure of skill instructions
+- **[API Documentation](docs/api/API_DOCUMENTATION.md)** - Complete RESTful API documentation
 - **[Code Structure Guide](docs/code-structure.md)** - Project structure and coding standards
 
 ## 🌟 Features
