@@ -1,11 +1,15 @@
 # Agent Skill Manager Framework
 
+<p align="center">
+  <img src="logo/JAgentSkillsManagerLogo.png" alt="Agent Skill Manager Logo" width="200"/>
+</p>
+
 A comprehensive framework for managing and integrating agent skills into Spring AI applications. Supports both traditional Spring Bean skills and the agentskills.io specification format.
 
 ## 📚 Documentation
 
-- **[Tools Integration Guide](docs/use/tool-integration.md)** - Integrate skills via Function Calling
-- **[Skill Prompt Integration Guide](docs/use/skill-prompt-integration.md)** - Progressive disclosure of skill instructions
+- **[Tools Integration Guide](docs/use/tool-integration_EN.md)** - Integrate skills via Function Calling
+- **[Skill Prompt Integration Guide](docs/use/skill-prompt-integration_EN.md)** - Progressive disclosure of skill instructions
 - **[Code Structure Guide](docs/code-structure.md)** - Project structure and coding standards
 
 ## 🌟 Features

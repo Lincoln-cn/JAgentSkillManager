@@ -1,5 +1,7 @@
 # Skill Prompt 渐进式披露集成指南
 
+**Languages**: [中文](skill-prompt-integration.md) | [English](skill-prompt-integration_EN.md)
+
 本文档介绍第三方 Spring AI 服务如何将 Agent Skill Manager 中的 skills（特别是 agentskills.io 格式的 SKILL.md）通过渐进式披露方式植入到 LLM 的 Prompt 中，实现更智能、更精确的 skill 调用。
 
 ## 目录
