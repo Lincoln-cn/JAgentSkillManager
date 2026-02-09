@@ -83,7 +83,27 @@ docs/
 
 ---
 
-更多文档请见： [docs/index.md](index.md)
+更多文档请见：本页已整合到 `docs/README.md`。下面为文档树状索引（简洁版），更详细的文档内容请在各页面中阅读。
+
+```
+docs/
+├── api/                    # API 文档（docs/api/API_DOCUMENTATION.md）
+├── guides/                 # 使用指南（docs/guides/...）
+│   └── use/
+├── reference/              # 参考文档（dependencies, logging, environments, skills-disclosure）
+├── development/            # 开发/贡献文档
+├── examples/               # 示例文档
+├── code_summary/           # 代码总结
+└── code-structure.md       # 代码结构说明
+```
+
+主要入口：
+
+- API: `docs/api/API_DOCUMENTATION.md`
+- Guides: `docs/guides/use/tool-integration.md`, `docs/guides/use/skill-prompt-integration.md`
+- Reference: `docs/reference/*.md`
+
+（注：`docs/index.md` 的内容已并入本文件并移除，保持单一入口 `docs/README.md`。）
 
 ## 📝 贡献文档
 

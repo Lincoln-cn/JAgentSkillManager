@@ -6,17 +6,17 @@
 
 一个用于 Spring AI 的 Agent Skill 管理框架，提供了灵活的方式来管理和集成各种技能到 Spring AI 应用中。支持传统 Spring Bean 技能和 agentskills.io 标准格式。
 
-## 📚 文档导航
+## 📚 文档与快速索引
 
-**Languages**: [中文](README.md) | [English](README_EN.md)
+Languages: [中文](README.md) | [English](README_EN.md)
 
-- **[Tools 集成指南](docs/guides/use/tool-integration.md)** - 通过 Function Calling 集成技能
-- **[Skill Prompt 集成指南](docs/guides/use/skill-prompt-integration.md)** - 通过渐进式披露植入提示词
-- **[API 文档](docs/api/API_DOCUMENTATION.md)** - RESTful API 完整文档
- - **[Tools 集成指南](docs/guides/use/tool-integration.md)** - 通过 Function Calling 集成技能
- - **[Skill Prompt 集成指南](docs/guides/use/skill-prompt-integration.md)** - 通过渐进式披露植入提示词
- - **[API 文档](docs/api/API_DOCUMENTATION.md)** - RESTful API 完整文档
- - **[文档目录 (docs/README.md)](docs/README.md)** - 项目文档索引（中文）
+主要文档索引（更多详细文档请到 docs/README.md）：
+
+- Documentation index: [docs/README.md](docs/README.md)
+- API reference: [docs/api/API_DOCUMENTATION.md](docs/api/API_DOCUMENTATION.md)
+- Guides: [docs/guides/use/tool-integration.md](docs/guides/use/tool-integration.md), [docs/guides/use/skill-prompt-integration.md](docs/guides/use/skill-prompt-integration.md)
+
+若需浏览完整文档目录与分类，请打开 `docs/README.md`。
 
 ## 框架特性
 
