@@ -232,9 +232,56 @@ public class FolderBasedSkillLoader {
      * Load skill from script files.
      */
     private AgentSkill loadSkillFromScript(Path skillFolder, SkillDescriptor descriptor) {
-        // This is a placeholder for script-based skill loading
-        // In a real implementation, you might support JavaScript, Python, etc.
-        logger.info("Script-based skill loading not yet implemented for: {}", descriptor.getName());
+        // Instead of executing scripts, disclose their contents so callers can
+        // perform progressive disclosure / inspection. We collect common script
+        // files from the skill folder (and a "scripts" subfolder) and attach
+        // their content to the descriptor's extra metadata under "disclosedScripts".
+        try {
+            List<String> extensions = List.of(".js", ".py", ".sh", ".ps1", ".rb", ".ts");
+            Map<String, String> scripts = new LinkedHashMap<>();
+
+            // check common locations: root and 'scripts' subdir
+            List<Path> candidateDirs = new ArrayList<>();
+            candidateDirs.add(skillFolder);
+            Path scriptsDir = skillFolder.resolve("scripts");
+            if (Files.exists(scriptsDir) && Files.isDirectory(scriptsDir)) {
+                candidateDirs.add(scriptsDir);
+            }
+
+            for (Path dir : candidateDirs) {
+                try (var stream = Files.list(dir)) {
+                    stream.filter(Files::isRegularFile)
+                          .filter(p -> {
+                              String name = p.getFileName().toString().toLowerCase();
+                              return extensions.stream().anyMatch(name::endsWith);
+                          })
+                          .forEach(p -> {
+                              try {
+                                  String content = Files.readString(p);
+                                  scripts.put(dir.relativize(p).toString(), content);
+                              } catch (IOException e) {
+                                  logger.warn("Failed to read script file for disclosure: {}", p, e);
+                              }
+                          });
+                } catch (IOException ignored) {}
+            }
+
+            if (!scripts.isEmpty()) {
+                Map<String, Object> meta = descriptor.getExtraMetadata();
+                if (meta == null) meta = new LinkedHashMap<>();
+                meta.put("disclosedScripts", scripts);
+                descriptor.setExtraMetadata(meta);
+                logger.info("Disclosed {} script(s) for skill {}", scripts.size(), descriptor.getName());
+            } else {
+                logger.info("No script files found for disclosure for: {}", descriptor.getName());
+            }
+
+        } catch (Exception e) {
+            logger.warn("Failed to collect script disclosure for skill {}", descriptor.getName(), e);
+        }
+
+        // We don't instantiate executable AgentSkill for scripts here — caller will
+        // fall back to a descriptor-backed skill which now contains disclosed script content.
         return null;
     }
     

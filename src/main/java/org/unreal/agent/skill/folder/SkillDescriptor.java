@@ -133,6 +133,14 @@ public class SkillDescriptor {
     public Map<String, Object> getExtraMetadata() { return extraMetadata; }
     public void setExtraMetadata(Map<String, Object> extraMetadata) { this.extraMetadata = extraMetadata; }
 
+    // helper to safely add metadata
+    public void addExtraMetadata(String key, Object value) {
+        if (this.extraMetadata == null) {
+            this.extraMetadata = new java.util.LinkedHashMap<>();
+        }
+        this.extraMetadata.put(key, value);
+    }
+
     public static SkillDescriptor fromFile(Path descriptorFile) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         return mapper.readValue(descriptorFile.toFile(), SkillDescriptor.class);
