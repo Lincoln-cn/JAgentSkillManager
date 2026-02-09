@@ -131,27 +131,31 @@ Use this skill when...
 
 ## 🚀 Quick Start
 
-### 1. Add Dependencies
+### 1. Add Dependencies (updated)
 
-Add the framework dependencies to your `pom.xml`:
+The project no longer depends on Spring AI directly. Keep the core runtime/parsing dependencies; example entries below — use versions from the project's `pom.xml`:
 
 ```xml
+<!-- JSON/YAML parsing -->
 <dependency>
-    <groupId>org.springframework.ai</groupId>
-    <artifactId>spring-ai-core</artifactId>
+  <groupId>com.fasterxml.jackson.core</groupId>
+  <artifactId>jackson-databind</artifactId>
+  <version>2.15.2</version>
 </dependency>
 <dependency>
-    <groupId>org.springframework.ai</groupId>
-    <artifactId>spring-ai-openai-spring-boot-starter</artifactId>
+  <groupId>com.fasterxml.jackson.dataformat</groupId>
+  <artifactId>jackson-dataformat-yaml</artifactId>
+  <version>2.15.2</version>
 </dependency>
+
+<!-- Logging (Logback) -->
 <dependency>
-    <groupId>com.fasterxml.jackson.core</groupId>
-    <artifactId>jackson-databind</artifactId>
+  <groupId>ch.qos.logback</groupId>
+  <artifactId>logback-classic</artifactId>
+  <version>1.4.11</version>
 </dependency>
-<dependency>
-    <groupId>com.fasterxml.jackson.dataformat</groupId>
-    <artifactId>jackson-dataformat-yaml</artifactId>
-</dependency>
+
+<!-- Remaining deps are in pom.xml -->
 ```
 
 ### 2. Configure Properties

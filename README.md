@@ -132,27 +132,31 @@ Use this skill when...
 
 ## 使用方法
 
-### 1. 添加依赖
+### 1. 依赖说明（已更新）
 
-在 `pom.xml` 中添加框架依赖：
+该项目已移除对 Spring AI 的直接依赖，保留用于运行与解析技能描述的必要依赖。下面是推荐的核心依赖示例 — 请以项目 `pom.xml` 中声明的版本为准：
 
 ```xml
+<!-- JSON/YAML parsing -->
 <dependency>
-    <groupId>org.springframework.ai</groupId>
-    <artifactId>spring-ai-core</artifactId>
+  <groupId>com.fasterxml.jackson.core</groupId>
+  <artifactId>jackson-databind</artifactId>
+  <version>2.15.2</version>
 </dependency>
 <dependency>
-    <groupId>org.springframework.ai</groupId>
-    <artifactId>spring-ai-openai-spring-boot-starter</artifactId>
+  <groupId>com.fasterxml.jackson.dataformat</groupId>
+  <artifactId>jackson-dataformat-yaml</artifactId>
+  <version>2.15.2</version>
 </dependency>
+
+<!-- Logging (Logback) -->
 <dependency>
-    <groupId>com.fasterxml.jackson.core</groupId>
-    <artifactId>jackson-databind</artifactId>
+  <groupId>ch.qos.logback</groupId>
+  <artifactId>logback-classic</artifactId>
+  <version>1.4.11</version>
 </dependency>
-<dependency>
-    <groupId>com.fasterxml.jackson.dataformat</groupId>
-    <artifactId>jackson-dataformat-yaml</artifactId>
-</dependency>
+
+<!-- 其余依赖请在 pom.xml 中查看 -->
 ```
 
 ### 2. 配置属性

@@ -31,6 +31,9 @@ public class FolderBasedSkillLoader {
     
     @Autowired
     private ApplicationContext applicationContext;
+
+    @Autowired
+    private org.unreal.agent.skill.config.AgentSkillProperties skillProperties;
     
     private final Map<String, LoadedSkill> loadedSkills = new ConcurrentHashMap<>();
     private final Map<String, URLClassLoader> classLoaders = new ConcurrentHashMap<>();
@@ -238,7 +241,7 @@ public class FolderBasedSkillLoader {
         // their content to the descriptor's extra metadata under "disclosedScripts".
         try {
             List<String> extensions = List.of(".js", ".py", ".sh", ".ps1", ".rb", ".ts");
-            Map<String, String> scripts = new LinkedHashMap<>();
+            Map<String, Object> scripts = new LinkedHashMap<>();
 
             // check common locations: root and 'scripts' subdir
             List<Path> candidateDirs = new ArrayList<>();
@@ -257,8 +260,25 @@ public class FolderBasedSkillLoader {
                           })
                           .forEach(p -> {
                               try {
+                                  long fileSize = Files.size(p);
+                                  long maxKb = skillProperties != null ? skillProperties.getMaxSkillMdSizeKb() : 20L;
+                                  long maxBytes = maxKb * 1024L;
+
                                   String content = Files.readString(p);
-                                  scripts.put(dir.relativize(p).toString(), content);
+                                  boolean truncated = false;
+                                  if (content.getBytes(java.nio.charset.StandardCharsets.UTF_8).length > maxBytes) {
+                                      // truncate to maxBytes (approximate by characters)
+                                      int cutoff = (int) Math.max(0, Math.min(content.length(), maxBytes));
+                                      content = content.substring(0, cutoff);
+                                      truncated = true;
+                                  }
+
+                                  Map<String, Object> info = new LinkedHashMap<>();
+                                  info.put("content", content);
+                                  info.put("truncated", truncated);
+                                  info.put("size", fileSize);
+
+                                  scripts.put(dir.relativize(p).toString(), info);
                               } catch (IOException e) {
                                   logger.warn("Failed to read script file for disclosure: {}", p, e);
                               }
