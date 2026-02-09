@@ -10,10 +10,10 @@ docs/
 ├── development/            # 开发文档
 ├── guides/                 # 使用指南
 │   └── use/               # 功能使用指南
-├── reference/             # 参考文档
-├── examples/              # 示例文档
-├── code_summary/          # 代码总结
-└── code-structure.md      # 项目代码结构
+├── reference/              # 参考文档（dependencies, logging, environments, skills-disclosure）
+├── examples/               # 示例文档
+├── code_summary/           # 代码总结
+└── code-structure.md       # 项目代码结构
 ```
 
 ## 📖 文档分类

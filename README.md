@@ -473,6 +473,10 @@ Map<String, Object> allSkills = adapter.getAllSkillsForAgentskillsIo();
 - `docs/logging.md` - Logback 完整配置与使用说明（包含滚动、异步写入、环境差异）
 - `docs/environments.md` - dev / prod 环境切换、差异及启动命令
 - `docs/skills-disclosure.md` - 脚本类技能的渐进式披露说明（不在运行时执行，而是把脚本内容披露给调用方）
+ - `docs/reference/dependencies.md` - 项目主要依赖与版本说明
+ - `docs/reference/logging.md` - Logback 完整配置与使用说明（包含滚动、异步写入、环境差异）
+ - `docs/reference/environments.md` - dev / prod 环境切换、差异及启动命令
+ - `docs/reference/skills-disclosure.md` - 脚本类技能的渐进式披露说明（不在运行时执行，而是把脚本内容披露给调用方）
 
 快速示例：
 
