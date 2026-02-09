@@ -320,10 +320,22 @@ POST /api/agent-skills/execute/{skillName}
 Content-Type: application/json
 
 {
-  "request": "用户请求文本",
   "parameters": {
     "key": "value"
   }
+}
+```
+
+### 13. 查找技能
+
+根据请求内容查找能够处理的技能。
+
+```http
+POST /api/agent-skills/find
+Content-Type: application/json
+
+{
+  "request": "用户请求文本"
 }
 ```
 

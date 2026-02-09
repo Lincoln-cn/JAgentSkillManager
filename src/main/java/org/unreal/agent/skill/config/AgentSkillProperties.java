@@ -17,12 +17,7 @@ public class AgentSkillProperties {
      * Whether to automatically register skills found in the classpath.
      */
     private boolean autoRegister = true;
-    
-    /**
-     * Whether to enable Spring AI integration.
-     */
-    private boolean springAiIntegration = true;
-    
+
     /**
      * Default timeout for skill execution in milliseconds.
      */
@@ -115,19 +110,11 @@ public class AgentSkillProperties {
     public boolean isAutoRegister() {
         return autoRegister;
     }
-    
+
     public void setAutoRegister(boolean autoRegister) {
         this.autoRegister = autoRegister;
     }
-    
-    public boolean isSpringAiIntegration() {
-        return springAiIntegration;
-    }
-    
-    public void setSpringAiIntegration(boolean springAiIntegration) {
-        this.springAiIntegration = springAiIntegration;
-    }
-    
+
     public long getExecutionTimeout() {
         return executionTimeout;
     }

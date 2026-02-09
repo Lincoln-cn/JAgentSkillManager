@@ -27,17 +27,7 @@
     <spring-ai.version>1.0.0-M1</spring-ai.version>
   </properties>
 
-  <dependencyManagement>
-    <dependencies>
-      <dependency>
-        <groupId>org.springframework.ai</groupId>
-        <artifactId>spring-ai-bom</artifactId>
-        <version>${spring-ai.version}</version>
-        <type>pom</type>
-        <scope>import</scope>
-      </dependency>
-    </dependencies>
-  </dependencyManagement>
+
 
   <dependencies>
     <!-- Spring Boot Web Starter -->
@@ -51,18 +41,6 @@
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
       <scope>test</scope>
-    </dependency>
-    
-    <!-- Spring AI Core -->
-    <dependency>
-      <groupId>org.springframework.ai</groupId>
-      <artifactId>spring-ai-core</artifactId>
-    </dependency>
-    
-    <!-- Spring AI OpenAI (example provider) -->
-    <dependency>
-      <groupId>org.springframework.ai</groupId>
-      <artifactId>spring-ai-openai-spring-boot-starter</artifactId>
     </dependency>
     
     <!-- Jackson for JSON processing -->

@@ -11,7 +11,6 @@ import org.springframework.context.annotation.ComponentScan;
 import org.unreal.agent.skill.AgentSkillManager;
 import org.unreal.agent.skill.folder.FolderBasedSkillLoader;
 import org.unreal.agent.skill.folder.SkillLifecycleManager;
-import org.unreal.agent.skill.springai.SpringAIAgentSkillAdapter;
 
 import jakarta.annotation.PostConstruct;
 import java.nio.file.Paths;
@@ -40,20 +39,7 @@ public class AgentSkillAutoConfiguration {
     public AgentSkillManager agentSkillManager() {
         return new AgentSkillManager();
     }
-    
-    /**
-     * Create the SpringAIAgentSkillAdapter bean for Spring AI integration.
-     * 
-     * @param agentSkillManager the skill manager
-     * @return SpringAIAgentSkillAdapter instance
-     */
-    @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnProperty(prefix = "agent.skill", name = "spring-ai-integration", havingValue = "true", matchIfMissing = true)
-    public SpringAIAgentSkillAdapter springAIAgentSkillAdapter(AgentSkillManager agentSkillManager) {
-        return new SpringAIAgentSkillAdapter(agentSkillManager);
-    }
-    
+
     /**
      * Create the FolderBasedSkillLoader bean for folder-based skill loading.
      * 
@@ -103,7 +89,6 @@ public class AgentSkillAutoConfiguration {
     public void init() {
         logger.info("Agent Skill framework auto-configuration initialized");
         logger.info("Folder-based skills: {}", properties.isFolderBasedSkills());
-        logger.info("Spring AI integration: {}", properties.isSpringAiIntegration());
         logger.info("Auto-load skills: {}", properties.isAutoLoadSkills());
         logger.info("agentskills.io support: {}", properties.isAgentskillsEnabled());
         
