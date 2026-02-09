@@ -1,7 +1,7 @@
 # Agent Skill Manager Framework
 
 <p align="center">
-  <img src="logo/JAgentSkillsManagerLogo.png" alt="Agent Skill Manager Logo" width="200"/>
+  <img src="logo/JAgentSkillsManagerLogo.png" alt="Agent Skill Manager Logo" width="400"/>
 </p>
 
 A comprehensive framework for managing and integrating agent skills into Spring AI applications. Supports both traditional Spring Bean skills and the agentskills.io specification format.
