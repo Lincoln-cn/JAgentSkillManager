@@ -6,13 +6,17 @@
 
 A comprehensive framework for managing and integrating agent skills into Spring AI applications. Supports both traditional Spring Bean skills and the agentskills.io specification format.
 
-## 📚 Documentation
+## 📚 Documentation Navigation
 
-- **[Tools Integration Guide](docs/guides/use/tool-integration_EN.md)** - Integrate skills via Function Calling
-- **[Skill Prompt Integration Guide](docs/guides/use/skill-prompt-integration_EN.md)** - Progressive disclosure of skill instructions
-- **[API Documentation](docs/api/API_DOCUMENTATION.md)** - Complete RESTful API documentation
-- **[Code Structure Guide](docs/code-structure.md)** - Project structure and coding standards
-- **[Documentation Index](docs/README.md)** - Documentation overview and index (Chinese & English)
+Language: [中文](README.md) | [English](README_EN.md)
+
+Primary document index (for more details, visit `docs/README.md`):
+
+- Documentation Index: [docs/README.md](docs/README.md)
+- API Reference: [docs/api/API_DOCUMENTATION.md](docs/api/API_DOCUMENTATION.md)
+- Guides: [docs/guides/use/tool-integration_EN.md](docs/guides/use/tool-integration_EN.md), [docs/guides/use/skill-prompt-integration_EN.md](docs/guides/use/skill-prompt-integration_EN.md)
+
+For the complete documentation catalog, please visit `docs/README.md`.
 
 ## 🌟 Features
 

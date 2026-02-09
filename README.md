@@ -8,15 +8,15 @@
 
 ## 📚 文档与快速索引
 
-Languages: [中文](README.md) | [English](README_EN.md)
+语言： [中文](README.md) | [English](README_EN.md)
 
-主要文档索引（更多详细文档请到 docs/README.md）：
+主要文档索引（更多详细文档请到 `docs/README.md`）：
 
-- Documentation index: [docs/README.md](docs/README.md)
-- API reference: [docs/api/API_DOCUMENTATION.md](docs/api/API_DOCUMENTATION.md)
-- Guides: [docs/guides/use/tool-integration.md](docs/guides/use/tool-integration.md), [docs/guides/use/skill-prompt-integration.md](docs/guides/use/skill-prompt-integration.md)
+- 文档目录： [docs/README.md](docs/README.md)
+- API 参考： [docs/api/API_DOCUMENTATION.md](docs/api/API_DOCUMENTATION.md)
+- 指南： [docs/guides/use/tool-integration.md](docs/guides/use/tool-integration.md)、[docs/guides/use/skill-prompt-integration.md](docs/guides/use/skill-prompt-integration.md)
 
-若需浏览完整文档目录与分类，请打开 `docs/README.md`。
+若需浏览完整文档目录与分类，请打开 `docs/README.md` 阅读。
 
 ## 框架特性
 
@@ -118,20 +118,20 @@ skill-name/
 ```yaml
 ---
 name: pdf-processing
-description: Extract text and tables from PDF files...
+description: 从 PDF 文件中提取文本和表格...
 license: Apache-2.0
 metadata:
   author: agent-skill-team
   version: "1.0"
 ---
 
-# PDF Processing Skill
+# PDF 处理技能
 
-## When to use this skill
-Use this skill when...
+## 何时使用此技能
+使用此技能当...
 
-## How to extract text
-1. **Input**: Provide the PDF file path...
+## 如何提取文本
+1. **输入**: 提供 PDF 文件路径...
 ```
 
 ## 使用方法
@@ -229,34 +229,34 @@ public class MyCustomSkill implements AgentSkill {
 ```yaml
 ---
 name: my-skill
-description: Custom skill for specific task processing
+description: 针对特定任务处理的自定义技能
 license: MIT
 metadata:
   author: your-name
   version: "1.0"
 ---
 
-# My Custom Skill
+# 我的自定义技能
 
-## When to use this skill
-Use this skill when you need to...
+## 何时使用此技能
+当你需要...时使用此技能
 
-## How to process requests
-1. **Step one**: First processing step
-2. **Step two**: Second processing step
+## 如何处理请求
+1. **步骤一**: 第一个处理步骤
+2. **步骤二**: 第二个处理步骤
 
-### Parameters
-- `input_data` (required): The data to process
-- `mode` (optional): Processing mode - "fast" or "thorough"
+### 参数
+- `input_data` (必需): 要处理的数据
+- `mode` (可选): 处理模式 - "fast" 或 "thorough"
 
-## Scripts Reference
+## 脚本参考
 
 ### `scripts/processor.py`
-Main processing script with...
+主要处理脚本包含...
 
-## Error Handling
+## 错误处理
 
-Common errors and solutions...
+常见错误及解决方案...
 ```
 
 ### 4. 使用技能管理器
@@ -469,14 +469,10 @@ Map<String, Object> allSkills = adapter.getAllSkillsForAgentskillsIo();
 
 本仓库已提供完整的日志配置与多环境（dev / prod）支持。文档集中放在 `docs/` 目录下：
 
-- `docs/dependencies.md` - 项目主要依赖与版本说明
-- `docs/logging.md` - Logback 完整配置与使用说明（包含滚动、异步写入、环境差异）
-- `docs/environments.md` - dev / prod 环境切换、差异及启动命令
-- `docs/skills-disclosure.md` - 脚本类技能的渐进式披露说明（不在运行时执行，而是把脚本内容披露给调用方）
- - `docs/reference/dependencies.md` - 项目主要依赖与版本说明
- - `docs/reference/logging.md` - Logback 完整配置与使用说明（包含滚动、异步写入、环境差异）
- - `docs/reference/environments.md` - dev / prod 环境切换、差异及启动命令
- - `docs/reference/skills-disclosure.md` - 脚本类技能的渐进式披露说明（不在运行时执行，而是把脚本内容披露给调用方）
+- `docs/reference/dependencies.md` - 项目主要依赖与版本说明
+- `docs/reference/logging.md` - Logback 完整配置与使用说明（包含滚动、异步写入、环境差异）
+- `docs/reference/environments.md` - dev / prod 环境切换、差异及启动命令
+- `docs/reference/skills-disclosure.md` - 脚本类技能的渐进式披露说明（不在运行时执行，而是把脚本内容披露给调用方）
 
 快速示例：
 
