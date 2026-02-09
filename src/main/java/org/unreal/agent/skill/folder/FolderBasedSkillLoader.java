@@ -126,7 +126,12 @@ public class FolderBasedSkillLoader {
                 // Instruction-only skill from SKILL.md
                 skillInstance = new MarkdownAgentSkill(descriptor);
             } else {
+                // Try to load an implementation; if none found, fall back to a descriptor-backed skill
                 skillInstance = loadSkillInstance(skillFolder, descriptor);
+                if (skillInstance == null) {
+                    logger.info("Falling back to DescriptorAgentSkill for: {}", descriptor.getName());
+                    skillInstance = new DescriptorAgentSkill(descriptor);
+                }
             }
             
             if (skillInstance == null) {

@@ -18,8 +18,8 @@ import java.util.concurrent.TimeUnit;
  * Service for managing the lifecycle of folder-based skills.
  * Provides dynamic loading, unloading, and hot-reloading capabilities.
  */
-@Component
-public class SkillLifecycleManager {
+ @Component
+ public class SkillLifecycleManager {
     
     private static final Logger logger = LoggerFactory.getLogger(SkillLifecycleManager.class);
     
@@ -28,6 +28,15 @@ public class SkillLifecycleManager {
     
     @Autowired
     private AgentSkillManager skillManager;
+
+    // Setters to allow programmatic wiring when auto-configuration creates the instance
+    public void setSkillLoader(FolderBasedSkillLoader skillLoader) {
+        this.skillLoader = skillLoader;
+    }
+
+    public void setSkillManager(AgentSkillManager skillManager) {
+        this.skillManager = skillManager;
+    }
     
     private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(2);
     private final Map<String, WatchKey> watchKeys = new ConcurrentHashMap<>();
@@ -44,6 +53,13 @@ public class SkillLifecycleManager {
         this.skillsDirectory = skillsDirectory;
         
         try {
+            // If dependencies were not injected (created programmatically), they should
+            // have been set via setters before calling initialize. If they are still null,
+            // log a warning and skip loading to avoid NPE.
+            if (skillLoader == null || skillManager == null) {
+                logger.warn("SkillLifecycleManager dependencies not available, skipping initialize(). skillLoader={}, skillManager={}", skillLoader, skillManager);
+                return;
+            }
             // Initialize watch service
             watchService = FileSystems.getDefault().newWatchService();
             

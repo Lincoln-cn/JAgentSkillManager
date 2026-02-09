@@ -60,15 +60,14 @@ public class AgentSkillAutoConfiguration {
      * @return SkillLifecycleManager instance
      */
     @Bean
-    @ConditionalOnMissingBean
     @ConditionalOnProperty(prefix = "agent.skill", name = "folder-based-skills", havingValue = "true")
-    public SkillLifecycleManager skillLifecycleManager(
-            FolderBasedSkillLoader folderBasedSkillLoader,
-            AgentSkillManager agentSkillManager) {
-        
-        SkillLifecycleManager lifecycleManager = new SkillLifecycleManager();
-        
-        // Initialize lifecycle manager if folder-based skills are enabled
+    public Object skillLifecycleInitializer(SkillLifecycleManager lifecycleManager,
+                                            org.springframework.context.ApplicationContext applicationContext,
+                                            AgentSkillManager agentSkillManager,
+                                            FolderBasedSkillLoader folderBasedSkillLoader) {
+        // This bean ensures the SkillLifecycleManager (a component) is initialized
+        // by the application context. If auto-load is enabled, perform initialization
+        // using configured skills directory.
         if (properties.isFolderBasedSkills() && properties.isAutoLoadSkills()) {
             try {
                 String skillsDir = properties.getSkillsDirectory();
@@ -78,8 +77,33 @@ public class AgentSkillAutoConfiguration {
                 logger.error("Failed to initialize skill lifecycle manager", e);
             }
         }
-        
-        return lifecycleManager;
+
+        // Auto-register any AgentSkill beans present in the application context
+        try {
+            if (properties.isAutoRegister()) {
+                var beans = applicationContext.getBeansOfType(org.unreal.agent.skill.AgentSkill.class);
+                beans.values().forEach(skill -> {
+                    try {
+                        agentSkillManager.registerSkill(skill);
+                        logger.info("Auto-registered AgentSkill bean: {}", skill.getName());
+                    } catch (Exception e) {
+                        logger.warn("Failed to auto-register AgentSkill bean: {}", skill.getClass().getName(), e);
+                    }
+                });
+            }
+        } catch (Exception e) {
+            logger.warn("Auto-register step failed", e);
+        }
+
+        // Also attempt to load any skills that declare a descriptor but have main pointing to
+        // classes available as Spring beans (ensure FolderBasedSkillLoader can resolve them)
+        try {
+            // trigger a passive load to ensure loader's caches are ready (no-op if none)
+            folderBasedSkillLoader.getLoadedSkills();
+        } catch (Exception ignored) {}
+
+        // Return a noop bean
+        return new Object();
     }
     
     /**
