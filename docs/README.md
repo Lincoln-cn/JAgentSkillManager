@@ -72,6 +72,15 @@ docs/
 3. **参考** [API 文档](api/API_DOCUMENTATION.md) - 了解 RESTful API 使用方法
 4. **开发时查阅** [代码结构](code-structure.md) - 了解项目组织结构
 
+---
+
+## 文档索引（英文）
+
+- **[Tools Integration Guide](guides/use/tool-integration_EN.md)** - Tools integration via Function Calling
+- **[Skill Prompt Integration Guide](guides/use/skill-prompt-integration_EN.md)** - Progressive disclosure for skill prompts
+- **[API Documentation](api/API_DOCUMENTATION.md)** - RESTful API full reference (English & Chinese)
+- **[Code Structure Guide](code-structure.md)** - Project structure and coding standards
+
 ## 📝 贡献文档
 
 如果你想改进文档：

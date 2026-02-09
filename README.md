@@ -13,6 +13,10 @@
 - **[Tools 集成指南](docs/guides/use/tool-integration.md)** - 通过 Function Calling 集成技能
 - **[Skill Prompt 集成指南](docs/guides/use/skill-prompt-integration.md)** - 通过渐进式披露植入提示词
 - **[API 文档](docs/api/API_DOCUMENTATION.md)** - RESTful API 完整文档
+ - **[Tools 集成指南](docs/guides/use/tool-integration.md)** - 通过 Function Calling 集成技能
+ - **[Skill Prompt 集成指南](docs/guides/use/skill-prompt-integration.md)** - 通过渐进式披露植入提示词
+ - **[API 文档](docs/api/API_DOCUMENTATION.md)** - RESTful API 完整文档
+ - **[文档目录 (docs/README.md)](docs/README.md)** - 项目文档索引（中文）
 
 ## 框架特性
 
