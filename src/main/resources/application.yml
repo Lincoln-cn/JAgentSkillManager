@@ -1,6 +1,6 @@
 # Application configuration file
 server:
-  port: 14578
+  port: 8080
 
 spring:
   application:
