@@ -96,7 +96,22 @@ public class AgentSkillProperties {
      * Whether to enable metadata caching for performance.
      */
     private boolean enableMetadataCache = true;
-    
+
+    /**
+     * Cache expiration time in milliseconds. Default is 5 minutes (300,000 ms).
+     */
+    private long cacheExpirationMs = 5 * 60 * 1000;
+
+    /**
+     * Maximum number of entries in the metadata cache. Default is 100.
+     */
+    private int maxCacheSize = 100;
+
+    /**
+     * Whether to enable cache statistics tracking.
+     */
+    private boolean enableCacheStats = false;
+
     // Getters and setters
     
     public boolean isEnabled() {
@@ -232,8 +247,32 @@ public class AgentSkillProperties {
     public boolean isEnableMetadataCache() {
         return enableMetadataCache;
     }
-    
+
     public void setEnableMetadataCache(boolean enableMetadataCache) {
         this.enableMetadataCache = enableMetadataCache;
+    }
+
+    public long getCacheExpirationMs() {
+        return cacheExpirationMs;
+    }
+
+    public void setCacheExpirationMs(long cacheExpirationMs) {
+        this.cacheExpirationMs = cacheExpirationMs;
+    }
+
+    public int getMaxCacheSize() {
+        return maxCacheSize;
+    }
+
+    public void setMaxCacheSize(int maxCacheSize) {
+        this.maxCacheSize = maxCacheSize;
+    }
+
+    public boolean isEnableCacheStats() {
+        return enableCacheStats;
+    }
+
+    public void setEnableCacheStats(boolean enableCacheStats) {
+        this.enableCacheStats = enableCacheStats;
     }
 }

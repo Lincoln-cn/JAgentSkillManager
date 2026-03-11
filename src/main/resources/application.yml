@@ -17,6 +17,9 @@ agent:
     agentskills-enabled: true
     progressive-disclosure: true
     enable-metadata-cache: true
+    cache-expiration-ms: 300000  # 5 minutes in milliseconds
+    max-cache-size: 100         # Maximum number of cached entries
+    enable-cache-stats: false   # Enable cache statistics tracking
     skills-directory: "skills"
     hot-reload-enabled: true
     auto-load-skills: true
