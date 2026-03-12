@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
+import org.unreal.agent.skill.core.AgentSkill;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -45,7 +46,7 @@ class AgentSkillIntegrationTest {
 
         // Depending on test environment there may be preloaded folder-based skills.
         // Ensure the method call completes and returns either null or an AgentSkill instance.
-        assertTrue(skill == null || skill instanceof org.unreal.agent.skill.AgentSkill);
+        assertTrue(skill == null || skill instanceof org.unreal.agent.skill.core.AgentSkill);
     }
 
     @Test

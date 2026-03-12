@@ -5,9 +5,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import org.unreal.agent.skill.AgentSkill;
+import org.unreal.agent.skill.core.AgentSkill;
 import org.unreal.agent.skill.AgentSkillManager;
 import org.unreal.agent.skill.folder.FolderBasedSkillLoader;
+import org.unreal.agent.skill.util.InputValidationUtils;
 
 import java.io.*;
 import java.nio.file.*;
@@ -117,6 +118,12 @@ public class SkillManagementService {
      * @return true if deleted successfully
      */
     public boolean deleteSkill(String skillName) {
+        // Validate skill name
+        if (!InputValidationUtils.isValidSkillName(skillName)) {
+            logger.warn("Invalid skill name for deletion: {}", skillName);
+            return false;
+        }
+        
         try {
             // Unload from memory
             FolderBasedSkillLoader.LoadedSkill loadedSkill = skillLoader.getLoadedSkill(skillName);
@@ -147,6 +154,11 @@ public class SkillManagementService {
      * @return reload result
      */
     public SkillDeployResult reloadSkill(String skillName) {
+        // Validate skill name
+        if (!InputValidationUtils.isValidSkillName(skillName)) {
+            return SkillDeployResult.failure("Invalid skill name: " + skillName);
+        }
+        
         try {
             FolderBasedSkillLoader.LoadedSkill existingSkill = skillLoader.getLoadedSkill(skillName);
             if (existingSkill == null) {
@@ -237,6 +249,15 @@ public class SkillManagementService {
      * @return file content as string
      */
     public String readFile(String skillName, String filePath) throws IOException {
+        // Validate inputs
+        if (!InputValidationUtils.isValidSkillName(skillName)) {
+            throw new IllegalArgumentException("Invalid skill name: " + skillName);
+        }
+        
+        if (!InputValidationUtils.isValidFilePath(filePath)) {
+            throw new SecurityException("Invalid file path: " + filePath);
+        }
+        
         FolderBasedSkillLoader.LoadedSkill loadedSkill = skillLoader.getLoadedSkill(skillName);
         if (loadedSkill == null) {
             throw new IllegalArgumentException("Skill not found: " + skillName);
@@ -265,6 +286,19 @@ public class SkillManagementService {
      * @param content the content to write
      */
     public void writeFile(String skillName, String filePath, String content) throws IOException {
+        // Validate inputs
+        if (!InputValidationUtils.isValidSkillName(skillName)) {
+            throw new IllegalArgumentException("Invalid skill name: " + skillName);
+        }
+        
+        if (!InputValidationUtils.isValidFilePath(filePath)) {
+            throw new SecurityException("Invalid file path: " + filePath);
+        }
+        
+        if (!InputValidationUtils.isValidInputLength(content)) {
+            throw new IllegalArgumentException("Content exceeds maximum allowed length");
+        }
+        
         FolderBasedSkillLoader.LoadedSkill loadedSkill = skillLoader.getLoadedSkill(skillName);
         if (loadedSkill == null) {
             throw new IllegalArgumentException("Skill not found: " + skillName);
@@ -294,6 +328,15 @@ public class SkillManagementService {
      * @param filePath the file path relative to skill folder
      */
     public void deleteFile(String skillName, String filePath) throws IOException {
+        // Validate inputs
+        if (!InputValidationUtils.isValidSkillName(skillName)) {
+            throw new IllegalArgumentException("Invalid skill name: " + skillName);
+        }
+        
+        if (!InputValidationUtils.isValidFilePath(filePath)) {
+            throw new SecurityException("Invalid file path: " + filePath);
+        }
+        
         FolderBasedSkillLoader.LoadedSkill loadedSkill = skillLoader.getLoadedSkill(skillName);
         if (loadedSkill == null) {
             throw new IllegalArgumentException("Skill not found: " + skillName);

@@ -8,6 +8,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Import;
 import org.unreal.agent.skill.AgentSkillManager;
 import org.unreal.agent.skill.folder.FolderBasedSkillLoader;
 import org.unreal.agent.skill.folder.SkillLifecycleManager;
@@ -22,6 +23,7 @@ import java.nio.file.Paths;
  */
 @AutoConfiguration
 @ComponentScan(basePackages = "org.unreal.agent.skill")
+@Import(ConfigurationSetup.class)
 public class AgentSkillAutoConfiguration {
     
     private static final Logger logger = LoggerFactory.getLogger(AgentSkillAutoConfiguration.class);
@@ -81,7 +83,7 @@ public class AgentSkillAutoConfiguration {
         // Auto-register any AgentSkill beans present in the application context
         try {
             if (properties.isAutoRegister()) {
-                var beans = applicationContext.getBeansOfType(org.unreal.agent.skill.AgentSkill.class);
+                var beans = applicationContext.getBeansOfType(org.unreal.agent.skill.core.AgentSkill.class);
                 beans.values().forEach(skill -> {
                     try {
                         agentSkillManager.registerSkill(skill);

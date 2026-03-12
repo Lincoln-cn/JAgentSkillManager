@@ -1,6 +1,11 @@
 package org.unreal.agent.skill;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.unreal.agent.skill.core.AgentSkill;
+import org.unreal.agent.skill.core.AgentSkillResult;
+import org.unreal.agent.skill.lifecycle.SkillEventManager;
+import org.unreal.agent.skill.manager.SkillManager;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -8,72 +13,57 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * Service for managing and executing agent skills.
  * This is the core component that coordinates skill execution and management.
+ * @deprecated Use implementations of {@link org.unreal.agent.skill.manager.SkillManager} instead
  */
 @Service
-public class AgentSkillManager {
+public class AgentSkillManager implements SkillManager {
     
     private final Map<String, AgentSkill> skills = new ConcurrentHashMap<>();
     private final List<SkillExecutionListener> listeners = new ArrayList<>();
     
-    /**
-     * Register a new skill.
-     * 
-     * @param skill the skill to register
-     */
+    @Autowired(required = false)
+    private SkillEventManager eventManager;
+    
+    @Override
     public void registerSkill(AgentSkill skill) {
         Objects.requireNonNull(skill, "Skill cannot be null");
         skills.put(skill.getName(), skill);
+        
+        // Publish event if event manager is available
+        if (eventManager != null) {
+            eventManager.publishSkillLoaded(skill);
+        }
     }
-    
-    /**
-     * Unregister a skill.
-     * 
-     * @param skillName the name of the skill to unregister
-     */
+
+    @Override
     public void unregisterSkill(String skillName) {
-        skills.remove(skillName);
+        AgentSkill removedSkill = skills.remove(skillName);
+        
+        // Publish event if event manager is available and skill was removed
+        if (eventManager != null && removedSkill != null) {
+            eventManager.publishSkillUnloaded(removedSkill);
+        }
     }
-    
-    /**
-     * Get all registered skills.
-     * 
-     * @return collection of all registered skills
-     */
+
+    @Override
     public Collection<AgentSkill> getAllSkills() {
         return new ArrayList<>(skills.values());
     }
-    
-    /**
-     * Get a skill by name.
-     * 
-     * @param name the skill name
-     * @return the skill if found, null otherwise
-     */
+
+    @Override
     public AgentSkill getSkill(String name) {
         return skills.get(name);
     }
-    
-    /**
-     * Find a skill that can handle the given request.
-     * 
-     * @param request the request to find a skill for
-     * @return the skill that can handle the request, null if none found
-     */
+
+    @Override
     public AgentSkill findSkillForRequest(String request) {
         return skills.values().stream()
                 .filter(skill -> skill.canHandle(request))
                 .findFirst()
                 .orElse(null);
     }
-    
-    /**
-     * Execute a skill by name.
-     * 
-     * @param skillName the name of the skill to execute
-     * @param request the request to process
-     * @param parameters the parameters for skill execution
-     * @return the result of skill execution
-     */
+
+    @Override
     public AgentSkillResult executeSkill(String skillName, String request, Map<String, Object> parameters) {
         AgentSkill skill = skills.get(skillName);
         if (skill == null) {
@@ -82,17 +72,11 @@ public class AgentSkillManager {
                     .skillName(skillName)
                     .build();
         }
-        
+
         return executeSkill(skill, request, parameters);
     }
-    
-    /**
-     * Execute a skill that can handle the given request.
-     * 
-     * @param request the request to process
-     * @param parameters the parameters for skill execution
-     * @return the result of skill execution
-     */
+
+    @Override
     public AgentSkillResult executeSkill(String request, Map<String, Object> parameters) {
         AgentSkill skill = findSkillForRequest(request);
         if (skill == null) {
@@ -100,13 +84,13 @@ public class AgentSkillManager {
                     .message("No skill found to handle request: " + request)
                     .build();
         }
-        
+
         return executeSkill(skill, request, parameters);
     }
     
     /**
      * Execute a specific skill instance.
-     * 
+     *
      * @param skill the skill to execute
      * @param request the request to process
      * @param parameters the parameters for skill execution
@@ -114,18 +98,34 @@ public class AgentSkillManager {
      */
     private AgentSkillResult executeSkill(AgentSkill skill, String request, Map<String, Object> parameters) {
         notifyExecutionStarted(skill, request, parameters);
-        
+        long startTime = System.currentTimeMillis();
+
         try {
             AgentSkillResult result = skill.execute(request, parameters);
+            long executionTime = System.currentTimeMillis() - startTime;
+            
             notifyExecutionCompleted(skill, request, parameters, result);
+            
+            // Publish event if event manager is available
+            if (eventManager != null) {
+                eventManager.publishSkillExecuted(skill, request, parameters, result, executionTime);
+            }
+            
             return result;
         } catch (Exception e) {
+            long executionTime = System.currentTimeMillis() - startTime;
             AgentSkillResult result = AgentSkillResult.failure()
                     .message("Skill execution failed: " + e.getMessage())
                     .skillName(skill.getName())
                     .metadata(Map.of("error", e.getClass().getSimpleName(), "request", request))
                     .build();
             notifyExecutionFailed(skill, request, parameters, e);
+            
+            // Publish event even for failed executions
+            if (eventManager != null) {
+                eventManager.publishSkillExecuted(skill, request, parameters, result, executionTime);
+            }
+            
             return result;
         }
     }

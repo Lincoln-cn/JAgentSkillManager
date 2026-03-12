@@ -3,7 +3,7 @@ package org.unreal.agent.skill.folder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
-import org.unreal.agent.skill.AgentSkill;
+import org.unreal.agent.skill.core.AgentSkill;
 import org.unreal.agent.skill.folder.model.SkillEntryPoint;
 import org.unreal.agent.skill.folder.model.SkillParameters;
 
@@ -156,20 +156,62 @@ public class SkillMigrationUtils {
         // canHandle method
         template.append("    @Override\n");
         template.append("    public boolean canHandle(String request) {\n");
-        template.append("        // TODO: Implement request handling logic\n");
+        template.append("        // Determine if this skill can handle the given request\n");
+        template.append("        // This is a basic implementation - customize based on your needs\n");
+        template.append("        String lowerDesc = getDescription().toLowerCase();\n");
+        template.append("        String lowerRequest = request.toLowerCase();\n");
+        template.append("        \n");
+        template.append("        // Check if request contains keywords from description\n");
+        template.append("        if (lowerRequest.contains(lowerDesc.substring(0, Math.min(lowerDesc.length(), 20)).toLowerCase())) {\n");
+        template.append("            return true;\n");
+        template.append("        }\n");
+        template.append("        \n");
+        template.append("        // Add more sophisticated matching logic as needed\n");
         template.append("        return false;\n");
         template.append("    }\n\n");
-        
+
         // execute method
         template.append("    @Override\n");
         template.append("    public AgentSkillResult execute(String request, Map<String, Object> parameters) {\n");
-        template.append("        // TODO: Implement skill execution logic\n");
-        template.append("        return AgentSkillResult.failure()\n");
-        template.append("                .message(\"Not implemented yet\")\n");
-        template.append("                .skillName(getName())\n");
-        template.append("                .build();\n");
+        template.append("        try {\n");
+        template.append("            // TODO: Implement the actual skill logic here\n");
+        template.append("            // Access required parameters with: parameters.get(\"paramName\")\n");
+        template.append("            // Perform the skill's intended function\n");
+        template.append("            \n");
+        template.append("            // Example implementation - replace with actual logic\n");
+        template.append("            Object result = performSkillLogic(request, parameters);\n");
+        template.append("            \n");
+        template.append("            return AgentSkillResult.success()\n");
+        template.append("                    .message(\"Skill executed successfully\")\n");
+        template.append("                    .data(result)\n");
+        template.append("                    .skillName(getName())\n");
+        template.append("                    .build();\n");
+        template.append("        } catch (Exception e) {\n");
+        template.append("            return AgentSkillResult.failure()\n");
+        template.append("                    .message(\"Skill execution failed: \" + e.getMessage())\n");
+        template.append("                    .skillName(getName())\n");
+        template.append("                    .build();\n");
+        template.append("        }\n");
         template.append("    }\n\n");
-        
+
+        // performSkillLogic helper method
+        template.append("    /**\n");
+        template.append("     * Performs the actual skill logic.\n");
+        template.append("     * This is a placeholder method - implement the actual functionality here.\n");
+        template.append("     *\n");
+        template.append("     * @param request the input request\n");
+        template.append("     * @param parameters the skill parameters\n");
+        template.append("     * @return the result of the skill execution\n");
+        template.append("     */\n");
+        template.append("    private Object performSkillLogic(String request, Map<String, Object> parameters) {\n");
+        template.append("        // TODO: Implement the actual skill functionality\n");
+        template.append("        // This is where you would put the business logic for your skill\n");
+        template.append("        // For example, calling external APIs, processing data, etc.\n");
+        template.append("        \n");
+        template.append("        // Placeholder implementation\n");
+        template.append("        return \"Skill result for request: \" + request;\n");
+        template.append("    }\n\n");
+
         // getRequiredParameters method
         Map<String, String> requiredParams = skill.getRequiredParameters();
         template.append("    @Override\n");
@@ -232,20 +274,22 @@ public class SkillMigrationUtils {
      * Generate README template for the skill.
      */
     private String generateReadmeTemplate() {
-        return "# Skill README\n\n" +
+        return "# Skill Name\n\n" +
                "## Description\n" +
-               "TODO: Add skill description\n\n" +
+               "Provide a detailed description of what this skill does and its purpose.\n\n" +
                "## Usage\n" +
-               "TODO: Add usage examples\n\n" +
+               "Describe how to use this skill, with examples of typical requests.\n\n" +
                "## Parameters\n" +
                "### Required\n" +
-               "- TODO: List required parameters\n\n" +
+               "- parameter1: Description of required parameter 1\n" +
+               "- parameter2: Description of required parameter 2\n\n" +
                "### Optional\n" +
-               "- TODO: List optional parameters\n\n" +
+               "- parameter3: Description of optional parameter 3 (default value)\n" +
+               "- parameter4: Description of optional parameter 4 (default value)\n\n" +
                "## Installation\n" +
-               "TODO: Add installation instructions\n\n" +
+               "Provide instructions on how to install and configure this skill.\n\n" +
                "## Development\n" +
-               "TODO: Add development instructions\n";
+               "Include information for developers who want to modify or extend this skill.\n";
     }
     
     /**

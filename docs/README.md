@@ -1,125 +1,40 @@
-# 项目文档目录
+# Agent Skill Manager Framework 文档
 
-本文档目录包含了 Agent Skill Manager 框架的所有相关文档。文档按类别组织，便于查找和阅读。
+欢迎来到 Agent Skill Manager Framework 的文档中心！
 
-## 📁 目录结构
+## 快速导航
 
-```
-docs/
-├── api/                    # API 文档
-├── development/            # 开发文档
-├── guides/                 # 使用指南
-│   └── use/               # 功能使用指南
-├── reference/              # 参考文档（dependencies, logging, environments, skills-disclosure）
-├── examples/               # 示例文档
-├── code_summary/           # 代码总结
-└── code-structure.md       # 项目代码结构
-```
+- [项目概述](../README.md) - 项目基本介绍和使用方法
+- [架构重构文档](architecture_refactor.md) - 重构后的新架构说明
+- [安全指南](security_guide.md) - 安全特性、措施和最佳实践
+- [性能优化](performance_optimization.md) - 性能优化措施和配置
 
-## 📖 文档分类
+## 文档目录
 
-### 1. API 文档 (api/)
+完整文档目录请参见：[文档目录索引](DOCUMENTATION_INDEX.md)
 
-**[API_DOCUMENTATION.md](api/API_DOCUMENTATION.md)** - 完整的 RESTful API 文档
+## 主要主题
 
-包含所有管理端点的详细说明：
-- 技能部署 API (上传/删除/重载/导出)
-- 文件管理 API (列表/读取/更新/删除)
-- 查询 API (技能列表/详情/执行)
-- 完整的请求/响应示例
+### 安全性
+了解框架的安全特性和最佳实践：
+- [安全指南](security_guide.md)
 
-### 2. 开发文档 (development/)
+### 性能优化
+学习如何优化框架性能：
+- [性能优化](performance_optimization.md)
 
-| 文档 | 说明 |
-|------|------|
-| **[CONTRIBUTING.md](development/CONTRIBUTING.md)** | 贡献指南 - 如何参与项目开发 |
-| **[CODE_OF_CONDUCT.md](development/CODE_OF_CONDUCT.md)** | 行为准则 - 社区参与规范 |
-| **[CHANGELOG.md](development/CHANGELOG.md)** | 变更日志 - 版本更新记录 |
+### 架构设计
+理解重构后的架构设计：
+- [架构重构文档](architecture_refactor.md)
 
-### 3. 使用指南 (guides/use/)
+## API 参考
 
-| 文档 | 说明 |
-|------|------|
-| **[tool-integration.md](guides/use/tool-integration.md)** | Tools 集成指南 - 通过 Function Calling 集成技能 |
-| **[tool-integration_EN.md](guides/use/tool-integration_EN.md)** | Tools Integration Guide (English) |
-| **[skill-prompt-integration.md](guides/use/skill-prompt-integration.md)** | Skill Prompt 集成指南 - 通过渐进式披露植入提示词 |
-| **[skill-prompt-integration_EN.md](guides/use/skill-prompt-integration_EN.md)** | Skill Prompt Integration Guide (English) |
+- [API 文档](api/API_DOCUMENTATION.md) - REST API 参考
 
-### 4. 参考文档 (reference/)
+## 开发指南
 
-**[agent-skills.md](reference/agent-skills.md)** - Agent Skills 概念和参考文档
+- [开发指南](development/README.md) - 开发环境搭建和开发指南
 
-### 5. 项目结构
+## 贡献
 
-**[code-structure.md](code-structure.md)** - 项目代码结构说明
-
-### 6. 代码总结 (code_summary/)
-
-包含代码重构和改动的总结文档。
-
-### 7. 示例文档 (examples/)
-
-用于存放示例项目和教程文档。
-
----
-
-## 🚀 快速开始
-
-如果你是第一次使用本框架，建议按以下顺序阅读：
-
-1. **先阅读** [项目根目录 README](../README.md) - 了解框架概览
-2. **再阅读** [Tools 集成指南](guides/use/tool-integration.md) - 学习如何集成技能
-3. **参考** [API 文档](api/API_DOCUMENTATION.md) - 了解 RESTful API 使用方法
-4. **开发时查阅** [代码结构](code-structure.md) - 了解项目组织结构
-
----
-
-## 文档索引（英文）
-
-- **[Tools Integration Guide](guides/use/tool-integration_EN.md)** - Tools integration via Function Calling
-- **[Skill Prompt Integration Guide](guides/use/skill-prompt-integration_EN.md)** - Progressive disclosure for skill prompts
-- **[API Documentation](api/API_DOCUMENTATION.md)** - RESTful API full reference (English & Chinese)
-- **[Code Structure Guide](code-structure.md)** - Project structure and coding standards
-
----
-
-更多文档请见：本页已整合到 `docs/README.md`。下面为文档树状索引（简洁版），更详细的文档内容请在各页面中阅读。
-
-```
-docs/
-├── api/                    # API 文档（docs/api/API_DOCUMENTATION.md）
-├── guides/                 # 使用指南（docs/guides/...）
-│   └── use/
-├── reference/              # 参考文档（dependencies, logging, environments, skills-disclosure）
-├── development/            # 开发/贡献文档
-├── examples/               # 示例文档
-├── code_summary/           # 代码总结
-└── code-structure.md       # 代码结构说明
-```
-
-主要入口：
-
-- API: `docs/api/API_DOCUMENTATION.md`
-- Guides: `docs/guides/use/tool-integration.md`, `docs/guides/use/skill-prompt-integration.md`
-- Reference: `docs/reference/*.md`
-
-（注：`docs/index.md` 的内容已并入本文件并移除，保持单一入口 `docs/README.md`。）
-
-## 📝 贡献文档
-
-如果你想改进文档：
-
-1. 遵循 [贡献指南](development/CONTRIBUTING.md) 中的规范
-2. 保持中英文文档同步更新
-3. 在修改后更新本文档目录索引
-4. 提交 PR 前在本地预览文档效果
-
-## 📞 获取帮助
-
-- 查看 [CHANGELOG](development/CHANGELOG.md) 了解最新功能
-- 阅读 [API 文档](api/API_DOCUMENTATION.md) 了解接口详情
-- 参考示例项目了解实际用法
-
----
-
-**提示**: 本文档目录会随项目发展持续更新，建议定期查看最新版本。
+如果您想为文档做出贡献，请参阅 [贡献指南](../CONTRIBUTING.md)。

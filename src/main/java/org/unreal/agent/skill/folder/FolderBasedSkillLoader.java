@@ -5,8 +5,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
-import org.unreal.agent.skill.AgentSkill;
-import org.unreal.agent.skill.AgentSkillResult;
+import org.unreal.agent.skill.core.AgentSkill;
+import org.unreal.agent.skill.core.AgentSkillResult;
+import org.unreal.agent.skill.util.SecureClassLoader;
+import org.unreal.agent.skill.util.SecurityUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -199,17 +201,25 @@ public class FolderBasedSkillLoader {
      * Load skill from JAR file.
      */
     private AgentSkill loadSkillFromJar(Path jarFile, String mainClass) throws Exception {
-        URL jarUrl = jarFile.toUri().toURL();
-        URLClassLoader classLoader = new URLClassLoader(new URL[]{jarUrl}, getClass().getClassLoader());
+        // Validate the main class name
+        if (!SecurityUtils.isAllowedClassName(mainClass)) {
+            logger.error("Class loading denied for: {} - not in allowed packages", mainClass);
+            return null;
+        }
         
+        URL jarUrl = jarFile.toUri().toURL();
+        // Use secure class loader with restricted permissions
+        URLClassLoader classLoader = new SecureClassLoader(new URL[]{jarUrl}, 
+            getClass().getClassLoader(), jarFile.getParent());
+
         Class<?> skillClass = classLoader.loadClass(mainClass);
         Object instance = skillClass.getDeclaredConstructor().newInstance();
-        
+
         if (instance instanceof AgentSkill) {
             classLoaders.put(mainClass, classLoader);
             return (AgentSkill) instance;
         }
-        
+
         return null;
     }
     
@@ -217,17 +227,25 @@ public class FolderBasedSkillLoader {
      * Load skill from classes directory.
      */
     private AgentSkill loadSkillFromClassesDirectory(Path classesDir, String mainClass) throws Exception {
-        URL classesUrl = classesDir.toUri().toURL();
-        URLClassLoader classLoader = new URLClassLoader(new URL[]{classesUrl}, getClass().getClassLoader());
+        // Validate the main class name
+        if (!SecurityUtils.isAllowedClassName(mainClass)) {
+            logger.error("Class loading denied for: {} - not in allowed packages", mainClass);
+            return null;
+        }
         
+        URL classesUrl = classesDir.toUri().toURL();
+        // Use secure class loader with restricted permissions
+        URLClassLoader classLoader = new SecureClassLoader(new URL[]{classesUrl}, 
+            getClass().getClassLoader(), classesDir);
+
         Class<?> skillClass = classLoader.loadClass(mainClass);
         Object instance = skillClass.getDeclaredConstructor().newInstance();
-        
+
         if (instance instanceof AgentSkill) {
             classLoaders.put(mainClass, classLoader);
             return (AgentSkill) instance;
         }
-        
+
         return null;
     }
     
@@ -341,7 +359,11 @@ public class FolderBasedSkillLoader {
             try {
                 URLClassLoader classLoader = classLoaders.remove(skill.getDescriptor().getMain());
                 if (classLoader != null) {
-                    classLoader.close();
+                    try {
+                        classLoader.close();
+                    } catch (IOException e) {
+                        logger.warn("Failed to close class loader for skill: {}", skillName, e);
+                    }
                 }
                 logger.info("Successfully unloaded skill: {}", skillName);
                 return true;

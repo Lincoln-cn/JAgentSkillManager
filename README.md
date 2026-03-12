@@ -35,18 +35,24 @@
 ### 1. AgentSkill 接口
 所有技能的基础接口，定义了技能的核心方法：
 - `getName()`: 获取技能名称
-- `getDescription()`: 获取技能描述  
+- `getDescription()`: 获取技能描述
 - `canHandle()`: 判断是否能处理特定请求
 - `execute()`: 执行技能逻辑
 - `getRequiredParameters()` / `getOptionalParameters()`: 定义参数
 - `getInstructions()`: 获取 SKILL.md 指令内容（agentskills.io 格式）
 
-### 2. AgentSkillManager
+### 2. SkillManager 接口及其实现
 技能管理服务，负责：
 - 注册和管理技能
 - 查找合适的技能处理请求
 - 执行技能并返回结果
 - 提供事件监听机制
+
+重构后的技能管理器采用策略模式，包括：
+- `DefaultSkillManager`: 默认实现
+- `SpringBeanSkillManager`: 专门管理 Spring Bean 技能
+- `FolderBasedSkillManager`: 专门管理文件夹技能
+- `UnifiedSkillManager`: 统一技能管理器
 
 ### 3. SpringAIAgentSkillAdapter
 Spring AI 集成适配器，提供：
@@ -54,11 +60,17 @@ Spring AI 集成适配器，提供：
 - 生成函数定义和参数 schema
 - 获取所有指令内容用于系统提示增强
 
-### 4. FolderBasedSkillLoader
-文件夹技能加载器，支持：
-- 从目录加载技能
-- 支持多种技能格式（Spring Bean、JAR、脚本）
-- 动态类加载和管理
+### 4. SkillLoader 接口及其实现
+插件化技能加载器，支持：
+- 从多种来源加载技能（文件夹、JAR、Spring Bean 等）
+- 支持多种技能格式
+- 安全的动态类加载
+
+重构后的加载器架构包括：
+- `SkillLoader`: 加载器接口
+- `SkillLoaderRegistry`: 加载器注册表
+- `FolderSkillLoader`: 文件夹技能加载器
+- `SpringBeanSkillLoader`: Spring Bean 技能加载器
 
 ### 5. agentskills.io 支持
 
@@ -83,12 +95,31 @@ Spring AI 集成适配器，提供：
 - 文件监控和热重载
 - 批量技能操作
 
-### 7. 配置组件
-- `AgentSkillAutoConfiguration`: 自动配置类
-- `AgentSkillProperties`: 配置属性
-- `AgentSkillConfiguration`: 配置类
+### 7. 事件驱动架构
+重构后引入了事件驱动架构，包括：
+- `SkillLoadedEvent`: 技能加载事件
+- `SkillUnloadedEvent`: 技能卸载事件
+- `SkillExecutedEvent`: 技能执行事件
+- `SkillEventManager`: 事件发布器
 
-### 8. 迁移工具
+### 8. 安全增强
+重构后增强了安全性，包括：
+- `SecureClassLoader`: 安全的类加载器
+- `InputValidationUtils`: 输入验证工具
+- 路径遍历防护机制
+
+### 9. 缓存机制
+重构后引入了缓存机制，包括：
+- `SimpleCache`: 通用缓存实现
+- `SkillCacheManager`: 技能缓存管理器
+- 元数据和执行结果缓存
+
+### 10. 配置组件
+- `AgentSkillAutoConfiguration`: 自动配置类
+- `AgentSkillProperties`: 配置属性（带验证）
+- `ConfigurationValidator`: 配置验证器
+
+### 11. 迁移工具
 - `SkillMigrationUtils`: 技能格式转换
 - 从 Spring Bean 迁移到文件夹格式
 - 生成技能模板和结构
@@ -304,29 +335,83 @@ public class SkillController {
 
 ## 项目结构
 
+重构后的项目结构遵循领域驱动设计（DDD）：
+
 ```
 src/main/java/org/unreal/agent/skill/
-├── AgentSkill.java                    # 核心接口
-├── AgentSkillResult.java              # 结果类
-├── AgentSkillManager.java             # 技能管理服务
-├── springai/
-│   └── SpringAIAgentSkillAdapter.java  # Spring AI 适配器
-├── folder/
-│   ├── SkillDescriptor.java         # 技能描述符
-│   ├── SkillMarkdownParser.java      # agentskills.io 解析器
-│   ├── FolderBasedSkillLoader.java  # 文件夹技能加载器
-│   ├── MarkdownAgentSkill.java      # Markdown 指令技能
-│   ├── SkillLifecycleManager.java   # 生命周期管理
-│   └── AgentSkillManager.java       # agentskills.io 专用管理器
-├── example/
-│   ├── TextAnalysisSkill.java        # 示例技能
-│   └── DateTimeSkill.java           # 示例技能
-├── config/
-│   ├── AgentSkillAutoConfiguration.java # 自动配置
-│   ├── AgentSkillProperties.java     # 配置属性
-│   └── AgentSkillConfiguration.java    # 配置类
-└── migration/
-    └── SkillMigrationUtils.java        # 迁移工具
+├── core/                           # 核心接口和基础实现
+│   ├── AgentSkill.java             # 核心技能接口
+│   ├── AgentSkillResult.java       # 技能执行结果
+│   └── exception/                  # 核心异常类
+│       ├── SkillException.java
+│       ├── SkillExecutionException.java
+│       └── SkillValidationException.java
+├── manager/                        # 技能管理器
+│   ├── SkillManager.java           # 技能管理接口
+│   ├── DefaultSkillManager.java    # 默认实现
+│   ├── SpringBeanSkillManager.java # Spring Bean 管理器
+│   ├── FolderSkillManager.java     # 文件夹技能管理器
+│   └── registry/                   # 管理器注册和选择
+│       ├── SkillManagerRegistry.java
+│       └── SkillManagerSelector.java
+├── loader/                         # 技能加载器
+│   ├── SkillLoader.java            # 加载器接口
+│   ├── SkillLoaderRegistry.java    # 加载器注册表
+│   ├── impl/                       # 具体加载器实现
+│   │   ├── JarSkillLoader.java
+│   │   ├── ScriptSkillLoader.java
+│   │   ├── ClassSkillLoader.java
+│   │   └── FolderBasedSkillLoader.java
+│   └── model/                      # 加载相关模型
+│       ├── LoadedSkill.java
+│       └── LoadContext.java
+├── validator/                      # 验证器
+│   ├── SkillValidator.java         # 验证器接口
+│   └── DefaultSkillValidator.java
+├── lifecycle/                      # 生命周期管理
+│   ├── SkillLifecycleManager.java
+│   ├── SkillLifecycleListener.java
+│   └── event/                      # 生命周期事件
+│       ├── SkillLoadedEvent.java
+│       ├── SkillUnloadedEvent.java
+│       └── SkillReloadedEvent.java
+├── cache/                          # 缓存相关
+│   ├── SimpleCache.java
+│   ├── SkillCacheManager.java
+│   ├── SkillMetadataCache.java
+│   └── CacheConfig.java
+├── config/                         # 配置相关
+│   ├── AgentSkillProperties.java
+│   ├── AgentSkillAutoConfiguration.java
+│   ├── AgentSkillConfiguration.java
+│   ├── ConfigurationValidator.java
+│   └── ConfigurationSetup.java
+├── migration/                      # 迁移工具
+│   ├── SkillMigrationService.java
+│   └── MigrationStrategy.java
+├── web/                            # Web 层
+│   ├── AgentSkillController.java
+│   └── dto/                        # Web DTO
+│       ├── SkillRegistrationRequest.java
+│       └── SkillExecutionResponse.java
+├── service/                        # 业务服务层
+│   ├── SkillExecutionService.java
+│   ├── SkillManagementService.java
+│   └── SkillDiscoveryService.java
+├── model/                          # 业务模型
+│   ├── SkillDescriptor.java
+│   ├── SkillMetadata.java
+│   └── SkillParameter.java
+├── util/                           # 工具类
+│   ├── SkillUtils.java
+│   ├── FileValidationUtils.java
+│   ├── SecurityUtils.java
+│   └── InputValidationUtils.java
+├── example/                        # 示例技能
+│   ├── TextAnalysisSkill.java
+│   └── DateTimeSkill.java
+└── springai/                       # Spring AI 集成
+    └── SpringAIAgentSkillAdapter.java
 ```
 
 ## 技能目录结构示例
@@ -458,12 +543,31 @@ Map<String, Object> allSkills = adapter.getAllSkillsForAgentskillsIo();
 
 ## 核心组件索引
 
-- `[AgentSkill](src/main/java/org/unreal/agent/skill/AgentSkill.java)` - 技能接口定义
-- `[AgentSkillManager](src/main/java/org/unreal/agent/skill/AgentSkillManager.java)` - 技能管理
+- `[AgentSkill](src/main/java/org/unreal/agent/skill/core/AgentSkill.java)` - 技能接口定义
+- `[SkillManager](src/main/java/org/unreal/agent/skill/manager/SkillManager.java)` - 技能管理接口
+- `[DefaultSkillManager](src/main/java/org/unreal/agent/skill/manager/DefaultSkillManager.java)` - 默认技能管理器
 - `[SpringAIAgentSkillAdapter](src/main/java/org/unreal/agent/skill/springai/SpringAIAgentSkillAdapter.java)` - Spring AI 集成适配器
 - `[SkillMarkdownParser](src/main/java/org/unreal/agent/skill/folder/SkillMarkdownParser.java)` - SKILL.md 解析器
-- `[FolderBasedSkillLoader](src/main/java/org/unreal/agent/skill/folder/FolderBasedSkillLoader.java)` - 文件夹技能加载器
+- `[FolderBasedSkillLoader](src/main/java/org/unreal/agent/skill/loader/impl/FolderBasedSkillLoader.java)` - 文件夹技能加载器
 - `[SkillLifecycleManager](src/main/java/org/unreal/agent/skill/folder/SkillLifecycleManager.java)` - 生命周期管理
+- `[SecureClassLoader](src/main/java/org/unreal/agent/skill/util/SecureClassLoader.java)` - 安全类加载器
+- `[SimpleCache](src/main/java/org/unreal/agent/skill/cache/SimpleCache.java)` - 简单缓存实现
+- `[InputValidationUtils](src/main/java/org/unreal/agent/skill/util/InputValidationUtils.java)` - 输入验证工具
+
+## 重构后架构优势
+
+重构后的架构带来了显著的优势，详见：[重构后架构优势](docs/advantages_after_refactor.md)
+
+## 详细文档
+
+若需浏览完整文档目录与分类，请打开 `docs/README.md` 阅读。
+
+主要文档目录：
+- [架构重构文档](docs/architecture_refactor.md) - 重构后的新架构说明
+- [安全指南](docs/security_guide.md) - 安全特性、措施和最佳实践
+- [性能优化](docs/performance_optimization.md) - 性能优化措施和配置
+- [API 文档](docs/api/API_DOCUMENTATION.md) - API 参考文档
+- [开发指南](docs/development/README.md) - 开发环境搭建和开发指南
 
 ## 配置、日志与多环境说明
 

@@ -1,4 +1,4 @@
-package org.unreal.agent.skill;
+package org.unreal.agent.skill.core;
 
 import java.time.LocalDateTime;
 import java.util.Map;

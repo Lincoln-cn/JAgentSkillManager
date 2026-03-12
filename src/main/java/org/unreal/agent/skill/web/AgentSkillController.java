@@ -3,9 +3,9 @@ package org.unreal.agent.skill.web;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.unreal.agent.skill.AgentSkill;
+import org.unreal.agent.skill.core.AgentSkill;
 import org.unreal.agent.skill.AgentSkillManager;
-import org.unreal.agent.skill.AgentSkillResult;
+import org.unreal.agent.skill.core.AgentSkillResult;
 import org.unreal.agent.skill.folder.DescriptorAgentSkill;
 import org.unreal.agent.skill.folder.SkillDescriptor;
 

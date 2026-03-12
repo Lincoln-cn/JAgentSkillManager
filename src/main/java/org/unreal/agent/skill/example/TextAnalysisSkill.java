@@ -1,8 +1,8 @@
 package org.unreal.agent.skill.example;
 
 import org.springframework.stereotype.Component;
-import org.unreal.agent.skill.AgentSkill;
-import org.unreal.agent.skill.AgentSkillResult;
+import org.unreal.agent.skill.core.AgentSkill;
+import org.unreal.agent.skill.core.AgentSkillResult;
 
 import java.util.HashMap;
 import java.util.Map;

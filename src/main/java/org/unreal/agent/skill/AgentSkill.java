@@ -1,4 +1,4 @@
-package org.unreal.agent.skill;
+package org.unreal.agent.skill.core;
 
 import java.util.Map;
 

@@ -1,6 +1,7 @@
 package org.unreal.agent.skill;
 
 import org.junit.jupiter.api.Test;
+import org.unreal.agent.skill.core.AgentSkillResult;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;

@@ -1,7 +1,7 @@
 package org.unreal.agent.skill.folder;
 
-import org.unreal.agent.skill.AgentSkill;
-import org.unreal.agent.skill.AgentSkillResult;
+import org.unreal.agent.skill.core.AgentSkill;
+import org.unreal.agent.skill.core.AgentSkillResult;
 
 import java.util.Collections;
 import java.util.HashMap;

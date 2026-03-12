@@ -9,9 +9,9 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
-import org.unreal.agent.skill.AgentSkill;
+import org.unreal.agent.skill.core.AgentSkill;
 import org.unreal.agent.skill.AgentSkillManager;
-import org.unreal.agent.skill.AgentSkillResult;
+import org.unreal.agent.skill.core.AgentSkillResult;
 import org.unreal.agent.skill.folder.DescriptorAgentSkill;
 import org.unreal.agent.skill.folder.SkillDescriptor;
 

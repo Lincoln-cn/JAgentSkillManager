@@ -5,6 +5,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.unreal.agent.skill.core.AgentSkill;
+import org.unreal.agent.skill.core.AgentSkillResult;
 
 import java.util.Map;
 
